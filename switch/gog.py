@@ -25,22 +25,17 @@ class AnyDevice(gatt.Device):
 
     def connect_succeeded(self):
         super().connect_succeeded()
-        #_LOGGER.error("[%s] Connected" % (self.mac_address))
 
     def connect_failed(self, error):
         super().connect_failed(error)
-        #_LOGGER.error("[%s] Connection failed: %s" % (self.mac_address, str(error)))
 
     def disconnect_succeeded(self):
         super().disconnect_succeeded()
-        #_LOGGER.error("[%s] Disconnected" % (self.mac_address))
 
-    #is there any feedback when services are resolved
     def services_resolved(self):
         super().services_resolved()
 
     def play_gong(self):
-        #actuator actioned - this should be moved in the switch interface
         device_information_service = next(
             s for s in self.services
             if s.uuid == SERVICE)
@@ -61,19 +56,19 @@ class AnyDevice(gatt.Device):
 
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
-    """Set up the Arduino platform."""
+    """Set up the Gong platform."""
 
     switches = []
     switches.append(GongSwitch())
     add_devices(switches)
 
 class GongSwitch(SwitchDevice):
-    """Representation of an Arduino switch."""
+    """Representation of an Gong switch."""
 
     def __init__(self):
         """Initialize the Pin."""
-        self._name = 'Gong' #options.get(CONF_NAME)
-        self.pin_type = 'digital' #CONF_TYPE
+        self._name = 'Gong'
+        self.pin_type = 'digital'
         self.direction = 'out'
 
         self._state = 'false' #options.get(CONF_INITIAL)
@@ -89,7 +84,7 @@ class GongSwitch(SwitchDevice):
 
     @property
     def name(self):
-        """Get the name of the pin."""
+        """Get the name of the Gong."""
         return self._name
 
     @property
@@ -99,14 +94,12 @@ class GongSwitch(SwitchDevice):
 
     def turn_on(self):
         """Turn the pin to high/on."""
+        _LOGGER.info("TURN ON")
         self._state = True
-
-        _LOGGER.error("TURN ON")
 
         self.device.play_gong()
 
     def turn_off(self):
         """Turn the pin to low/off."""
-        _LOGGER.error("TURN OFF")
-
+        _LOGGER.info("TURN OFF")
         self._state = False

@@ -1,0 +1,864 @@
+
+ble_c759cd408dcd:
+  hide_if_away: false
+  mac: BLE_C7:59:CD:40:8D:CD
+  name: bleGONG
+  picture: http://artdrum.com/IMAGES/PHOTOSDRUMSINSTRUMENTS/ACCESSORIES/24_Inch_Gong_Hanger.jpg
+  track: true
+  vendor: unknown
+
+ble_fd35691ca364:
+  hide_if_away: false
+  mac: BLE_FD:35:69:1C:A3:64
+  name: ble fd35691ca364
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_f4f5d8538891:
+  hide_if_away: false
+  mac: BLE_F4:F5:D8:53:88:91
+  name: ble f4f5d8538891
+  picture:
+  track: false 
+  vendor: Google, Inc.
+
+ble_5a13c65223d3:
+  hide_if_away: false
+  mac: BLE_5A:13:C6:52:23:D3
+  name: ble 5a13c65223d3
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_5eb3672df667:
+  hide_if_away: false
+  mac: BLE_5E:B3:67:2D:F6:67
+  name: ble 5eb3672df667
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_80e4da71bb08:
+  hide_if_away: false
+  mac: BLE_80:E4:DA:71:BB:08
+  name: ble 80e4da71bb08
+  picture:
+  track: false 
+  vendor: IEEE Registration Authority
+
+ble_434ea844acfd:
+  hide_if_away: false
+  mac: BLE_43:4E:A8:44:AC:FD
+  name: ble 434ea844acfd
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_086698ce9e05:
+  hide_if_away: false
+  mac: BLE_08:66:98:CE:9E:05
+  name: ble 086698ce9e05
+  picture:
+  track: false 
+  vendor: Apple, Inc.
+
+ble_80e4da712d71:
+  hide_if_away: false
+  mac: BLE_80:E4:DA:71:2D:71
+  name: ble 80e4da712d71
+  picture:
+  track: false 
+  vendor: IEEE Registration Authority
+
+ble_6c4008bdae31:
+  hide_if_away: false
+  mac: BLE_6C:40:08:BD:AE:31
+  name: ble 6c4008bdae31
+  picture:
+  track: false 
+  vendor: Apple, Inc.
+
+ble_7c04d0cb5033:
+  hide_if_away: false
+  mac: BLE_7C:04:D0:CB:50:33
+  name: ble 7c04d0cb5033
+  picture:
+  track: false 
+  vendor: Apple, Inc.
+
+ble_ff9501f889a9:
+  hide_if_away: false
+  mac: BLE_FF:95:01:F8:89:A9
+  name: ble ff9501f889a9
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_de47ff400dd1:
+  hide_if_away: false
+  mac: BLE_DE:47:FF:40:0D:D1
+  name: ble de47ff400dd1
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_62821da80ab4:
+  hide_if_away: false
+  mac: BLE_62:82:1D:A8:0A:B4
+  name: ble 62821da80ab4
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_731a2198018b:
+  hide_if_away: false
+  mac: BLE_73:1A:21:98:01:8B
+  name: ble 731a2198018b
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_535793cc46e4:
+  hide_if_away: false
+  mac: BLE_53:57:93:CC:46:E4
+  name: ble 535793cc46e4
+  picture:
+  track: false 
+  vendor: unknown
+
+w_activite_f8:
+  hide_if_away: false
+  mac: BLE_30:78:79:1D:0D:13
+  name: W Activite F8
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_68479c1a000a:
+  hide_if_away: false
+  mac: BLE_68:47:9C:1A:00:0A
+  name: ble 68479c1a000a
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_719243947889:
+  hide_if_away: false
+  mac: BLE_71:92:43:94:78:89
+  name: ble 719243947889
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_c4b30197bdf5:
+  hide_if_away: false
+  mac: BLE_C4:B3:01:97:BD:F5
+  name: ble c4b30197bdf5
+  picture:
+  track: false 
+  vendor: Apple, Inc.
+
+ble_fbe7275f088a:
+  hide_if_away: false
+  mac: BLE_FB:E7:27:5F:08:8A
+  name: ble fbe7275f088a
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_f3c85ba5fe9b:
+  hide_if_away: false
+  mac: BLE_F3:C8:5B:A5:FE:9B
+  name: ble f3c85ba5fe9b
+  picture:
+  track: false 
+  vendor: unknown
+
+w_activite_f8_2:
+  hide_if_away: false
+  mac: BLE_09:4E:4C:4F:60:11
+  name: W Activite F8
+  picture:
+  track: false 
+  vendor: unknown
+
+bbf1e5:
+  hide_if_away: false
+  mac: BLE_E5:02:9E:12:F1:E5
+  name: BB-F1E5
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_6a7648dee36e:
+  hide_if_away: false
+  mac: BLE_6A:76:48:DE:E3:6E
+  name: ble 6a7648dee36e
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_53d26c474338:
+  hide_if_away: false
+  mac: BLE_53:D2:6C:47:43:38
+  name: ble 53d26c474338
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_63e7b28a7482:
+  hide_if_away: false
+  mac: BLE_63:E7:B2:8A:74:82
+  name: ble 63e7b28a7482
+  picture:
+  track: false 
+  vendor: unknown
+
+nuki_046b3609:
+  hide_if_away: false
+  mac: BLE_54:D2:72:6B:36:09
+  name: Nuki 046B3609
+  picture:
+  track: false 
+  vendor: Nuki Home Solutions GmbH
+
+ble_42799ff8ad1e:
+  hide_if_away: false
+  mac: BLE_42:79:9F:F8:AD:1E
+  name: ble 42799ff8ad1e
+  picture:
+  track: false 
+  vendor: unknown
+
+w_activite_f8_3:
+  hide_if_away: false
+  mac: BLE_24:E7:C0:CE:B7:6C
+  name: W Activite F8
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_510842adf3d7:
+  hide_if_away: false
+  mac: BLE_51:08:42:AD:F3:D7
+  name: ble 510842adf3d7
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_f34297e2d3fa:
+  hide_if_away: false
+  mac: BLE_F3:42:97:E2:D3:FA
+  name: ble f34297e2d3fa
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_690ef05c0a4e:
+  hide_if_away: false
+  mac: BLE_69:0E:F0:5C:0A:4E
+  name: ble 690ef05c0a4e
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_58da48f304be:
+  hide_if_away: false
+  mac: BLE_58:DA:48:F3:04:BE
+  name: ble 58da48f304be
+  picture:
+  track: false 
+  vendor: unknown
+
+w_activite_f8_4:
+  hide_if_away: false
+  mac: BLE_08:45:BB:AF:3C:01
+  name: W Activite F8
+  picture:
+  track: false 
+  vendor: unknown
+
+w_activite_f8_5:
+  hide_if_away: false
+  mac: BLE_23:E5:35:77:6D:79
+  name: W Activite F8
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_6c4008999fd3:
+  hide_if_away: false
+  mac: BLE_6C:40:08:99:9F:D3
+  name: ble 6c4008999fd3
+  picture:
+  track: false 
+  vendor: Apple, Inc.
+
+triby225a:
+  hide_if_away: false
+  mac: BLE_18:B7:9E:02:22:5B
+  name: Triby-225A
+  picture:
+  track: false 
+  vendor: Invoxia
+
+ble_5e65c232c3c2:
+  hide_if_away: false
+  mac: BLE_5E:65:C2:32:C3:C2
+  name: ble 5e65c232c3c2
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_7b40d2e7376f:
+  hide_if_away: false
+  mac: BLE_7B:40:D2:E7:37:6F
+  name: ble 7b40d2e7376f
+  picture:
+  track: false 
+  vendor: unknown
+
+ble_430c0935ff03:
+  hide_if_away: false
+  mac: BLE_43:0C:09:35:FF:03
+  name: ble 430c0935ff03
+  picture:
+  track: false 
+  vendor: unknown
+
+raptor_strike:
+  hide_if_away: false
+  mac: BLE_08:DF:1F:DB:DC:3F
+  name: Raptor Strike
+  picture:
+  track: false 
+  vendor: Bose Corporation
+
+ble_6831e7800d71:
+  hide_if_away: false
+  mac: BLE_68:31:E7:80:0D:71
+  name: ble 6831e7800d71
+  picture:
+  track: true
+  vendor: unknown
+
+ble_482ab1289d79:
+  hide_if_away: false
+  mac: BLE_48:2A:B1:28:9D:79
+  name: ble 482ab1289d79
+  picture:
+  track: true
+  vendor: unknown
+
+ble_fc526e8e8706:
+  hide_if_away: false
+  mac: BLE_FC:52:6E:8E:87:06
+  name: ble fc526e8e8706
+  picture:
+  track: true
+  vendor: unknown
+
+w_activite_f8_6:
+  hide_if_away: false
+  mac: BLE_26:25:85:3B:0C:67
+  name: W Activite F8
+  picture:
+  track: true
+  vendor: unknown
+
+ble_451a19212a63:
+  hide_if_away: false
+  mac: BLE_45:1A:19:21:2A:63
+  name: ble 451a19212a63
+  picture:
+  track: true
+  vendor: unknown
+
+forerunner_235:
+  hide_if_away: false
+  mac: BLE_E7:60:C0:81:16:76
+  name: Forerunner 235
+  picture:
+  track: true
+  vendor: unknown
+
+ble_40172efae130:
+  hide_if_away: false
+  mac: BLE_40:17:2E:FA:E1:30
+  name: ble 40172efae130
+  picture:
+  track: true
+  vendor: unknown
+
+ble_0469f8a9f52a:
+  hide_if_away: false
+  mac: BLE_04:69:F8:A9:F5:2A
+  name: ble 0469f8a9f52a
+  picture:
+  track: true
+  vendor: Apple, Inc.
+
+w_activite_f8_7:
+  hide_if_away: false
+  mac: BLE_1D:C2:0B:33:DF:39
+  name: W Activite F8
+  picture:
+  track: true
+  vendor: unknown
+
+ble_5fa048fb9674:
+  hide_if_away: false
+  mac: BLE_5F:A0:48:FB:96:74
+  name: ble 5fa048fb9674
+  picture:
+  track: true
+  vendor: unknown
+
+ble_6ec09b7c47d0:
+  hide_if_away: false
+  mac: BLE_6E:C0:9B:7C:47:D0
+  name: ble 6ec09b7c47d0
+  picture:
+  track: true
+  vendor: unknown
+
+ble_4761211cfd45:
+  hide_if_away: false
+  mac: BLE_47:61:21:1C:FD:45
+  name: ble 4761211cfd45
+  picture:
+  track: true
+  vendor: unknown
+
+ble_625964685530:
+  hide_if_away: false
+  mac: BLE_62:59:64:68:55:30
+  name: ble 625964685530
+  picture:
+  track: true
+  vendor: unknown
+
+ble_72e738320207:
+  hide_if_away: false
+  mac: BLE_72:E7:38:32:02:07
+  name: ble 72e738320207
+  picture:
+  track: true
+  vendor: unknown
+
+w_activite_f8_8:
+  hide_if_away: false
+  mac: BLE_04:A8:07:FF:A1:B6
+  name: W Activite F8
+  picture:
+  track: true
+  vendor: unknown
+
+bose_quietcomfort_35:
+  hide_if_away: false
+  mac: BLE_04:52:C7:5C:2F:DD
+  name: Bose QuietComfort 35
+  picture:
+  track: true
+  vendor: Bose Corporation
+
+ble_41faf29d5e4b:
+  hide_if_away: false
+  mac: BLE_41:FA:F2:9D:5E:4B
+  name: ble 41faf29d5e4b
+  picture:
+  track: true
+  vendor: unknown
+
+ble_7cce58b52440:
+  hide_if_away: false
+  mac: BLE_7C:CE:58:B5:24:40
+  name: ble 7cce58b52440
+  picture:
+  track: true
+  vendor: unknown
+
+ble_7f5fa56ead51:
+  hide_if_away: false
+  mac: BLE_7F:5F:A5:6E:AD:51
+  name: ble 7f5fa56ead51
+  picture:
+  track: true
+  vendor: unknown
+
+ble_5c5d62ed7bfb:
+  hide_if_away: false
+  mac: BLE_5C:5D:62:ED:7B:FB
+  name: ble 5c5d62ed7bfb
+  picture:
+  track: true
+  vendor: unknown
+
+ble_4316b243306b:
+  hide_if_away: false
+  mac: BLE_43:16:B2:43:30:6B
+  name: ble 4316b243306b
+  picture:
+  track: true
+  vendor: unknown
+
+big_meeting_room:
+  hide_if_away: false
+  mac: BLE_F4:F5:D8:62:47:53
+  name: Big Meeting Room
+  picture:
+  track: true
+  vendor: Google, Inc.
+
+ble_4aabf5913c48:
+  hide_if_away: false
+  mac: BLE_4A:AB:F5:91:3C:48
+  name: ble 4aabf5913c48
+  picture:
+  track: true
+  vendor: unknown
+
+ble_45579a15d9b6:
+  hide_if_away: false
+  mac: BLE_45:57:9A:15:D9:B6
+  name: ble 45579a15d9b6
+  picture:
+  track: true
+  vendor: unknown
+
+ble_9801a798ae28:
+  hide_if_away: false
+  mac: BLE_98:01:A7:98:AE:28
+  name: ble 9801a798ae28
+  picture:
+  track: true
+  vendor: Apple, Inc.
+
+ble_4b3bb3cb37b2:
+  hide_if_away: false
+  mac: BLE_4B:3B:B3:CB:37:B2
+  name: ble 4b3bb3cb37b2
+  picture:
+  track: true
+  vendor: unknown
+
+ble_6b3d16073471:
+  hide_if_away: false
+  mac: BLE_6B:3D:16:07:34:71
+  name: ble 6b3d16073471
+  picture:
+  track: true
+  vendor: unknown
+
+ble_4353436e9e4b:
+  hide_if_away: false
+  mac: BLE_43:53:43:6E:9E:4B
+  name: ble 4353436e9e4b
+  picture:
+  track: true
+  vendor: unknown
+
+ble_94942602783d:
+  hide_if_away: false
+  mac: BLE_94:94:26:02:78:3D
+  name: ble 94942602783d
+  picture:
+  track: true
+  vendor: Apple, Inc.
+
+ble_5fdae8a5ca2d:
+  hide_if_away: false
+  mac: BLE_5F:DA:E8:A5:CA:2D
+  name: ble 5fdae8a5ca2d
+  picture:
+  track: true
+  vendor: unknown
+
+ble_6142287c5c7e:
+  hide_if_away: false
+  mac: BLE_61:42:28:7C:5C:7E
+  name: ble 6142287c5c7e
+  picture:
+  track: true
+  vendor: unknown
+
+fitness:
+  hide_if_away: false
+  mac: BLE_04:52:C7:09:DF:35
+  name: Fitness
+  picture:
+  track: true
+  vendor: Bose Corporation
+
+ble_42a68263a623:
+  hide_if_away: false
+  mac: BLE_42:A6:82:63:A6:23
+  name: ble 42a68263a623
+  picture:
+  track: true
+  vendor: unknown
+
+ble_f40f2435b57a:
+  hide_if_away: false
+  mac: BLE_F4:0F:24:35:B5:7A
+  name: ble f40f2435b57a
+  picture:
+  track: true
+  vendor: unknown
+
+ble_65e9a3e6eea1:
+  hide_if_away: false
+  mac: BLE_65:E9:A3:E6:EE:A1
+  name: ble 65e9a3e6eea1
+  picture:
+  track: true
+  vendor: unknown
+
+ble_40d8dacb5bc1:
+  hide_if_away: false
+  mac: BLE_40:D8:DA:CB:5B:C1
+  name: ble 40d8dacb5bc1
+  picture:
+  track: true
+  vendor: unknown
+
+ble_5e0d3bb9cb5a:
+  hide_if_away: false
+  mac: BLE_5E:0D:3B:B9:CB:5A
+  name: ble 5e0d3bb9cb5a
+  picture:
+  track: true
+  vendor: unknown
+
+bose_quietcomfort_35_2:
+  hide_if_away: false
+  mac: BLE_04:52:C7:5D:FE:0B
+  name: Bose QuietComfort 35
+  picture:
+  track: true
+  vendor: Bose Corporation
+
+ble_3c15c2d30dbb:
+  hide_if_away: false
+  mac: BLE_3C:15:C2:D3:0D:BB
+  name: ble 3c15c2d30dbb
+  picture:
+  track: true
+  vendor: Apple, Inc.
+
+ble_661a4fb9176c:
+  hide_if_away: false
+  mac: BLE_66:1A:4F:B9:17:6C
+  name: ble 661a4fb9176c
+  picture:
+  track: true
+  vendor: unknown
+
+ble_42d0bdc4ab00:
+  hide_if_away: false
+  mac: BLE_42:D0:BD:C4:AB:00
+  name: ble 42d0bdc4ab00
+  picture:
+  track: true
+  vendor: unknown
+
+ble_5456ef6aa558:
+  hide_if_away: false
+  mac: BLE_54:56:EF:6A:A5:58
+  name: ble 5456ef6aa558
+  picture:
+  track: true
+  vendor: unknown
+
+ble_f45c89bf1462:
+  hide_if_away: false
+  mac: BLE_F4:5C:89:BF:14:62
+  name: ble f45c89bf1462
+  picture:
+  track: true
+  vendor: Apple, Inc.
+
+ble_6a48853c1956:
+  hide_if_away: false
+  mac: BLE_6A:48:85:3C:19:56
+  name: ble 6a48853c1956
+  picture:
+  track: true
+  vendor: unknown
+
+w_activite_f8_9:
+  hide_if_away: false
+  mac: BLE_18:73:1E:4F:6D:C3
+  name: W Activite F8
+  picture:
+  track: true
+  vendor: unknown
+
+ble_64e45dd5f7d8:
+  hide_if_away: false
+  mac: BLE_64:E4:5D:D5:F7:D8
+  name: ble 64e45dd5f7d8
+  picture:
+  track: true
+  vendor: unknown
+
+ble_7e874f05dfba:
+  hide_if_away: false
+  mac: BLE_7E:87:4F:05:DF:BA
+  name: ble 7e874f05dfba
+  picture:
+  track: true
+  vendor: unknown
+
+ble_5365be40f832:
+  hide_if_away: false
+  mac: BLE_53:65:BE:40:F8:32
+  name: ble 5365be40f832
+  picture:
+  track: true
+  vendor: unknown
+
+ble_7eee50f4e742:
+  hide_if_away: false
+  mac: BLE_7E:EE:50:F4:E7:42
+  name: ble 7eee50f4e742
+  picture:
+  track: true
+  vendor: unknown
+
+ble_76a8b7293474:
+  hide_if_away: false
+  mac: BLE_76:A8:B7:29:34:74
+  name: ble 76a8b7293474
+  picture:
+  track: true
+  vendor: unknown
+
+tv_ue50j5550:
+  hide_if_away: false
+  mac: BLE_78:BD:BC:D3:5A:BD
+  name: '[TV] UE50J5550'
+  picture:
+  track: true
+  vendor: Samsung Electronics Co.,Ltd
+
+w_activite_f8_10:
+  hide_if_away: false
+  mac: BLE_27:BA:09:64:F9:65
+  name: W Activite F8
+  picture:
+  track: true
+  vendor: unknown
+
+ble_49419c72b06d:
+  hide_if_away: false
+  mac: BLE_49:41:9C:72:B0:6D
+  name: ble 49419c72b06d
+  picture:
+  track: true
+  vendor: unknown
+
+gesture:
+  hide_if_away: false
+  mac: BLE_B8:27:EB:59:67:5F
+  name: gesture
+  picture:
+  track: true
+  vendor: Raspberry Pi Foundation
+
+ble_51cbb9789b95:
+  hide_if_away: false
+  mac: BLE_51:CB:B9:78:9B:95
+  name: ble 51cbb9789b95
+  picture:
+  track: true
+  vendor: unknown
+
+vivosmart_hr:
+  hide_if_away: false
+  mac: BLE_F8:D9:AA:C9:CB:AD
+  name: "v\xEDvosmart HR"
+  picture:
+  track: true
+  vendor: unknown
+
+ble_514aef74bed1:
+  hide_if_away: false
+  mac: BLE_51:4A:EF:74:BE:D1
+  name: ble 514aef74bed1
+  picture:
+  track: true
+  vendor: unknown
+
+ble_5eb75d40eae9:
+  hide_if_away: false
+  mac: BLE_5E:B7:5D:40:EA:E9
+  name: ble 5eb75d40eae9
+  picture:
+  track: true
+  vendor: unknown
+
+ble_4ac01bd891ea:
+  hide_if_away: false
+  mac: BLE_4A:C0:1B:D8:91:EA
+  name: ble 4ac01bd891ea
+  picture:
+  track: true
+  vendor: unknown
+
+w_activite_f8_11:
+  hide_if_away: false
+  mac: BLE_19:A2:93:E4:5D:D0
+  name: W Activite F8
+  picture:
+  track: true
+  vendor: unknown
+
+ble_73caa501a136:
+  hide_if_away: false
+  mac: BLE_73:CA:A5:01:A1:36
+  name: ble 73caa501a136
+  picture:
+  track: true
+  vendor: unknown
+
+ble_4f10e4fa51f8:
+  hide_if_away: false
+  mac: BLE_4F:10:E4:FA:51:F8
+  name: ble 4f10e4fa51f8
+  picture:
+  track: true
+  vendor: unknown
+
+ble_7a2df6075724:
+  hide_if_away: false
+  mac: BLE_7A:2D:F6:07:57:24
+  name: ble 7a2df6075724
+  picture:
+  track: true
+  vendor: unknown
+
+ble_76ad09f5c017:
+  hide_if_away: false
+  mac: BLE_76:AD:09:F5:C0:17
+  name: ble 76ad09f5c017
+  picture:
+  track: true
+  vendor: unknown
+
+ble_56e6cd6565a2:
+  hide_if_away: false
+  mac: BLE_56:E6:CD:65:65:A2
+  name: ble 56e6cd6565a2
+  picture:
+  track: true
+  vendor: unknown
+
+ble_a45e60d1320a:
+  hide_if_away: false
+  mac: BLE_A4:5E:60:D1:32:0A
+  name: ble a45e60d1320a
+  picture:
+  track: true
+  vendor: Apple, Inc.

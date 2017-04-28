@@ -1,0 +1,2 @@
+17-04-28 11:54:28 WARNING (Thread-8) [homeassistant.components.light.hue] Connected to Hue at 192.168.1.83 but not registered.
+17-04-28 11:54:28 WARNING (Thread-7) [homeassistant.components.light.hue] Connected to Hue at 192.168.1.96 but not registered.
