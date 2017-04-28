@@ -76,6 +76,15 @@ tts:
 switch:
   platform: gog 
 
+automation:
+- alias: 'Morning Alignment Gong'
+  trigger:
+    platform: time
+    # When 'after' is used, you cannot also match on hour, minute, seconds.
+    # Military time format.
+    after: '10:00:00'
+  action:
+    - service: switch.turn_on
 group: !include groups.yaml
 
 
