@@ -19,6 +19,7 @@ CHARACTERISTIC = '6e400002-b5a3-f393-e0a9-e50e24dcca9e' #actuator HEX VALUE = 0x
 
 import gatt
 
+
 class AnyDevice(gatt.Device):
 
     def connect_succeeded(self):
@@ -33,10 +34,11 @@ class AnyDevice(gatt.Device):
         super().disconnect_succeeded()
         #_LOGGER.error("[%s] Disconnected" % (self.mac_address))
 
+    #is there any feedback when services are resolved
     def services_resolved(self):
         super().services_resolved()
 
-
+    #def playGong(self):
         #actuator actioned - this should be moved in the switch interface
         device_information_service = next(
             s for s in self.services
@@ -60,25 +62,33 @@ class AnyDevice(gatt.Device):
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Set up the Arduino platform."""
 
-    #pins = config.get(CONF_PINS)
-
     switches = []
-    #for pinnum, pin in pins.items():
     switches.append(GongSwitch())
     add_devices(switches)
-
 
 class GongSwitch(SwitchDevice):
     """Representation of an Arduino switch."""
 
     def __init__(self):
         """Initialize the Pin."""
-        #self._pin = pin
         self._name = 'Gong' #options.get(CONF_NAME)
         self.pin_type = 'digital' #CONF_TYPE
         self.direction = 'out'
 
         self._state = 'false' #options.get(CONF_INITIAL)
+
+        self._first = 1
+
+        self.device = None
+
+        # manager = gatt.DeviceManager(adapter_name='hci0')
+
+        # device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
+        # device.connect()
+        # _LOGGER.error("device.connect()")
+
+        # manager.run()
+        # _LOGGER.error("manager.run()")
 
     @property
     def name(self):
@@ -95,14 +105,29 @@ class GongSwitch(SwitchDevice):
         self._state = True
 
         _LOGGER.error("TURN ON")
+        # if self._first == 1:
+        #     manager = gatt.DeviceManager(adapter_name='hci0')
+
+        #     self.device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
+        #     self.device.connect()
+        #     _LOGGER.error("device.connect()")
+
+        #     self._first = 0
+        #     manager.run()
+        #     _LOGGER.error("manager.run()")
+
         manager = gatt.DeviceManager(adapter_name='hci0')
 
-        device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
-        device.connect()
+        self.device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
+        self.device.connect()
         _LOGGER.error("device.connect()")
 
+        #device.playGong()
+        
+        _LOGGER.error("FIRST")
         manager.run()
-        _LOGGER.error("manager.run()")
+
+        
 
     def turn_off(self):
         """Turn the pin to low/off."""

@@ -44,6 +44,7 @@ class AnyDevice(gatt.Device):
     def services_resolved(self):
         super().services_resolved()
 
+    def services_resolved(self):
         #actuator actioned - this should be moved in the switch interface
         device_information_service = next(
             s for s in self.services
@@ -67,7 +68,6 @@ class AnyDevice(gatt.Device):
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Set up the Arduino platform."""
     switches = []
-    #for pinnum, pin in pins.items():
     switches.append(GongSwitch())
     add_devices(switches)
 
@@ -77,12 +77,19 @@ class GongSwitch(SwitchDevice):
 
     def __init__(self):
         """Initialize the Pin."""
-        #self._pin = pin
         self._name = 'Gong' #options.get(CONF_NAME)
         self.pin_type = 'digital' #CONF_TYPE
         self.direction = 'out'
 
         self._state = 'false' #options.get(CONF_INITIAL)
+
+        manager = gatt.DeviceManager(adapter_name='hci0')
+
+        device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
+        device.connect()
+        _LOGGER.error("device.connect()")
+
+        manager.run()
 
     @property
     def name(self):
@@ -99,14 +106,14 @@ class GongSwitch(SwitchDevice):
         self._state = True
 
         _LOGGER.error("TURN ON")
-        manager = gatt.DeviceManager(adapter_name='hci0')
+        # manager = gatt.DeviceManager(adapter_name='hci0')
 
-        device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
-        device.connect()
-        _LOGGER.error("device.connect()")
+        # device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
+        # device.connect()
+        # _LOGGER.error("device.connect()")
 
-        manager.run()
-        _LOGGER.error("manager.run()")
+        # manager.run()
+
 
     def turn_off(self):
         """Turn the pin to low/off."""
