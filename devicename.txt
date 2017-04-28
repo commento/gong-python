@@ -1,0 +1,17 @@
+devicename:
+  name: Gong BLE
+  mac: BLE_C7:59:CD:40:8D:CD
+  picture: http://artdrum.com/IMAGES/PHOTOSDRUMSINSTRUMENTS/ACCESSORIES/24_Inch_Gong_Hanger.jpg
+  gravatar: test@example.com
+  track: yes
+  hide_if_away: no
+
+
+
+
+# Example configuration.yaml entry
+device_tracker:
+  - platform: bluetooth_le_tracker
+    track_new_devices: True
+    consider_home: 180
+    interval_seconds: 5
