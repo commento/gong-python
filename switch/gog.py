@@ -5,6 +5,7 @@ For more details about this platform, please refer to the documentation at
 https://home-assistant.io/components/switch.arduino/
 """
 import logging
+import threading
 
 from homeassistant.components.switch import (SwitchDevice, PLATFORM_SCHEMA)
 from homeassistant.const import CONF_NAME
@@ -38,7 +39,7 @@ class AnyDevice(gatt.Device):
     def services_resolved(self):
         super().services_resolved()
 
-    #def playGong(self):
+    def play_gong(self):
         #actuator actioned - this should be moved in the switch interface
         device_information_service = next(
             s for s in self.services
@@ -79,7 +80,12 @@ class GongSwitch(SwitchDevice):
 
         self._first = 1
 
-        self.device = None
+        manager = gatt.DeviceManager(adapter_name='hci0')
+        self.device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
+        self.device.connect()
+        print("device.connect()")
+
+        threading.Thread(target=manager.run).start()
 
         # manager = gatt.DeviceManager(adapter_name='hci0')
 
@@ -105,6 +111,8 @@ class GongSwitch(SwitchDevice):
         self._state = True
 
         _LOGGER.error("TURN ON")
+
+        self.device.play_gong()
         # if self._first == 1:
         #     manager = gatt.DeviceManager(adapter_name='hci0')
 
@@ -116,18 +124,17 @@ class GongSwitch(SwitchDevice):
         #     manager.run()
         #     _LOGGER.error("manager.run()")
 
-        manager = gatt.DeviceManager(adapter_name='hci0')
+        # manager = gatt.DeviceManager(adapter_name='hci0')
 
-        self.device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
-        self.device.connect()
-        _LOGGER.error("device.connect()")
+        # self.device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
+        # self.device.connect()
+        # _LOGGER.error("device.connect()")
 
-        #device.playGong()
+        # #device.playGong()
         
-        _LOGGER.error("FIRST")
-        manager.run()
-
-        
+        # _LOGGER.error("FIRST")
+        # thread.start_new_thread(manager.run, ())
+        # manager.run()
 
     def turn_off(self):
         """Turn the pin to low/off."""

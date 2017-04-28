@@ -1,11 +1,13 @@
 import gatt
-import thread
+import threading
 
 SERVICE = '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
-CHARACTERISTIC2 = '6e400003-b5a3-f393-e0a9-e50e24dcca9e' #HEX VALUE of char "x" = 0x78
+CHARACTERISTIC2 = '6e400003-b5a3-f393-e0a9-e50e24dcca9e' #HEX VALUE of char "x" = 0x78 number 120
 CHARACTERISTIC = '6e400002-b5a3-f393-e0a9-e50e24dcca9e' #actuator HEX VALUE = 0x00
 
 manager = gatt.DeviceManager(adapter_name='hci0')
+
+
 
 class AnyDevice(gatt.Device):
 
@@ -30,9 +32,7 @@ class AnyDevice(gatt.Device):
             for characteristic in service.characteristics:
                 print("[%s]    Characteristic [%s]" % (self.mac_address, characteristic.uuid))
 
-    #def play_gong(self):
-
-        #actuator actioned - this should be moved in the switch interface
+    def play_gong(self):
         device_information_service = next(
             s for s in self.services
             if s.uuid == SERVICE)
@@ -52,12 +52,20 @@ class AnyDevice(gatt.Device):
         print("written value characteristic")
 
 
-
 device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
 device.connect()
 print("device.connect()")
 
+#device.play_gong()
 
-#thread.start_new_thread(manager.run, ())
-manager.run()
+threading.Thread(target=manager.run).start()
 
+while True:
+    name = input("x ")
+    if name == "x":
+        print("do the gong")
+        device.play_gong()
+    else:
+        manager.stop()
+        break
+#manager.stop()
