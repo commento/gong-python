@@ -56,8 +56,6 @@ device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
 device.connect()
 print("device.connect()")
 
-#device.play_gong()
-
 threading.Thread(target=manager.run).start()
 
 while True:
@@ -68,4 +66,3 @@ while True:
     else:
         manager.stop()
         break
-#manager.stop()
