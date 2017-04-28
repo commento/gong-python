@@ -73,12 +73,9 @@ class GongSwitch(SwitchDevice):
 
         self._state = 'false' #options.get(CONF_INITIAL)
 
-        self._first = 1
-
         manager = gatt.DeviceManager(adapter_name='hci0')
         self.device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
         self.device.connect()
-        print("device.connect()")
 
         threading.Thread(target=manager.run).start()
 
@@ -94,12 +91,12 @@ class GongSwitch(SwitchDevice):
 
     def turn_on(self):
         """Turn the pin to high/on."""
-        _LOGGER.info("TURN ON")
+        _LOGGER.error("TURN ON")
         self._state = True
 
         self.device.play_gong()
 
     def turn_off(self):
         """Turn the pin to low/off."""
-        _LOGGER.info("TURN OFF")
+        _LOGGER.error("TURN OFF")
         self._state = False
