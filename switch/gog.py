@@ -53,7 +53,7 @@ class AnyDevice(gatt.Device):
             c for c in device_information_service.characteristics
             if c.uuid == CHARACTERISTIC2)
 
-        characteristic2.enable_notifications() #0x00
+        characteristic2.enable_notifications()
         _LOGGER.error("written value characteristic2")
 
         characteristic.write_value([120]) 
@@ -87,15 +87,6 @@ class GongSwitch(SwitchDevice):
 
         threading.Thread(target=manager.run).start()
 
-        # manager = gatt.DeviceManager(adapter_name='hci0')
-
-        # device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
-        # device.connect()
-        # _LOGGER.error("device.connect()")
-
-        # manager.run()
-        # _LOGGER.error("manager.run()")
-
     @property
     def name(self):
         """Get the name of the pin."""
@@ -113,28 +104,6 @@ class GongSwitch(SwitchDevice):
         _LOGGER.error("TURN ON")
 
         self.device.play_gong()
-        # if self._first == 1:
-        #     manager = gatt.DeviceManager(adapter_name='hci0')
-
-        #     self.device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
-        #     self.device.connect()
-        #     _LOGGER.error("device.connect()")
-
-        #     self._first = 0
-        #     manager.run()
-        #     _LOGGER.error("manager.run()")
-
-        # manager = gatt.DeviceManager(adapter_name='hci0')
-
-        # self.device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
-        # self.device.connect()
-        # _LOGGER.error("device.connect()")
-
-        # #device.playGong()
-        
-        # _LOGGER.error("FIRST")
-        # thread.start_new_thread(manager.run, ())
-        # manager.run()
 
     def turn_off(self):
         """Turn the pin to low/off."""
