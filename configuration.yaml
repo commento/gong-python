@@ -74,17 +74,51 @@ tts:
 #    interval_seconds: 5
 
 switch:
-  platform: gog 
+  - platform: gog 
+  - platform: dali
+
+# automation:
+# - alias: 'Morning Alignment Gong'
+#   trigger:
+#     platform: time
+#     # When 'after' is used, you cannot also match on hour, minute, seconds.
+#     # Military time format.
+#     after: '10:00:00'
+#   action:
+#     - service: switch.turn_on
+
+# switch:
+#   platform: dali 
 
 automation:
-- alias: 'Morning Alignment Gong'
+- alias: '10.00 Daily Alignment Gong'
   trigger:
     platform: time
     # When 'after' is used, you cannot also match on hour, minute, seconds.
     # Military time format.
     after: '10:00:00'
+  condition:
+  - condition: time
+    weekday:
+      - tue
+      - wed
+      - thu
+      - fri
   action:
     - service: switch.turn_on
+- alias: '9.00 Monday Alignment Gong'
+  trigger:
+    platform: time
+    # When 'after' is used, you cannot also match on hour, minute, seconds.
+    # Military time format.
+    after: '9:00:00'
+  condition:
+  - condition: time
+    weekday:
+      - mon
+  action:
+    - service: switch.turn_on
+
 group: !include groups.yaml
 
 
