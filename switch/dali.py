@@ -6,6 +6,7 @@ https://home-assistant.io/components/switch.arduino/
 """
 import logging
 from requests import get
+import json
 
 from homeassistant.components.switch import (SwitchDevice, PLATFORM_SCHEMA)
 from homeassistant.const import CONF_NAME
@@ -48,17 +49,34 @@ class DaliSwitch(SwitchDevice):
 
     @property
     def name(self):
-        """Get the name of the Gong."""
+        """Get the name of the Dali."""
         return self._name
 
     @property
     def is_on(self):
         """Return true if pin is high/on."""
+        url = 'http://192.168.1.128'
+        headers = {'x-ha-access': 'raspberry',
+       'content-type': 'application/json'}
+
+        response = get(url, headers=headers)
+        _LOGGER.error(response.text)
+
+        json_data = json.loads(response.text)
+        _LOGGER.error(json_data['state'])
+
+        state = json_data['state']
+
+        if state == 'on':
+            self._state = True
+        else:
+            self._state = False
+
         return self._state
 
     def turn_on(self):
         """Turn the pin to high/on."""
-        _LOGGER.error("TURN ON")
+        _LOGGER.error("DALI TURN ON")
         self._state = True
 
         #toggle_light()
@@ -67,7 +85,10 @@ class DaliSwitch(SwitchDevice):
        'content-type': 'application/json'}
 
         response = get(url, headers=headers)
-       #  _LOGGER.error(response.text)
+        _LOGGER.error(response.text)
+
+        json_data = json.loads(response.text)
+        _LOGGER.error(json_data)
 
         # bash_com = 'curl http://senic_dali.local/toggle'
         # subprocess.Popen(bash_com)
@@ -76,7 +97,8 @@ class DaliSwitch(SwitchDevice):
 
     def turn_off(self):
         """Turn the pin to low/off."""
-        _LOGGER.error("TURN OFF")
+        _LOGGER.error("DALI TURN OFF")
+        self._state = False
 
         #toggle_light()
         url = 'http://192.168.1.128/toggle'
@@ -84,10 +106,12 @@ class DaliSwitch(SwitchDevice):
        'content-type': 'application/json'}
 
         response = get(url, headers=headers)
+        _LOGGER.error(response.text)
+
+        json_data = json.loads(response.text)
+        _LOGGER.error(json_data)
 
         # bash_com = 'curl http://senic_dali.local/toggle'
         # subprocess.Popen(bash_com)
         # output = subprocess.check_output(['bash','-c', bash_com])
-        #_LOGGER.error(response.text)
 
-        self._state = False
