@@ -60,10 +60,10 @@ class DaliSwitch(SwitchDevice):
        'content-type': 'application/json'}
 
         response = get(url, headers=headers)
-        _LOGGER.error(response.text)
+        #_LOGGER.error(response.text)
 
         json_data = json.loads(response.text)
-        _LOGGER.error(json_data['state'])
+        #_LOGGER.error(json_data['state'])
 
         state = json_data['state']
 
