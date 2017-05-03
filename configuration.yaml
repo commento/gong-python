@@ -73,6 +73,14 @@ tts:
 #    consider_home: 180
 #    interval_seconds: 5
 
+notify:
+  - name: slack
+    username: HomeAssistant
+    platform: slack
+    api_key: !secret slackapikey
+    default_channel: '@riccardo'
+    icon: ":house_with_garden:"
+
 switch:
   - platform: gog 
   - platform: dali
@@ -106,6 +114,7 @@ automation:
       - fri
   action:
     - service: switch.turn_on
+      entity_id: switch.gog
 - alias: '9.00 Monday Alignment Gong'
   trigger:
     platform: time
@@ -118,6 +127,16 @@ automation:
       - mon
   action:
     - service: switch.turn_on
+      entity_id: switch.gog
+- alias: 'Slack Notification'
+  trigger:
+    platform: state
+    entity_id: switch.dali
+    to: 'on'
+  action:
+    - service: notify.slack
+      data:
+        message: "CIAO from HOME ASSISTANT :smile:"
 
 group: !include groups.yaml
 
