@@ -114,7 +114,7 @@ automation:
       - fri
   action:
     - service: switch.turn_on
-      entity_id: switch.gog
+      entity_id: switch.gong
 - alias: '9.00 Monday Alignment Gong'
   trigger:
     platform: time
@@ -127,7 +127,7 @@ automation:
       - mon
   action:
     - service: switch.turn_on
-      entity_id: switch.gog
+      entity_id: switch.gong
 - alias: 'Slack Notification'
   trigger:
     platform: state
