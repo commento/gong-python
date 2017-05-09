@@ -29,6 +29,18 @@ http:
 # Checks for available updates
 updater:
 
+# Example configuration.yaml entry
+# device_tracker:
+#   - platform: nmap_tracker
+#     hosts: 192.168.1.1/24
+
+# Example configuration.yaml entry
+# device_tracker:
+#   - platform: cisco_ios
+#     host: 192.168.1.1
+#     username: !secret YOUR_ADMIN_USERNAME
+#     password: !secret YOUR_ADMIN_PASSWORD
+
 # Discover some devices automatically
 discovery:
 
@@ -45,8 +57,24 @@ logbook:
 sun:
 
 # Weather Prediction
-sensor:
-  platform: yr
+#sensor:
+#  platform: yr
+
+enocean:
+  device: /dev/ttyUSB0
+
+binary_sensor:
+  - platform: enocean
+    name: "button sensor"
+    id: [0xFE,0xFB,0xFE,0x61]
+  # - platform: enocean
+  #   name: "no-button sensor"
+  #   id: [0xE2,0x15,0x00,0x00,0x1E,0xE7]
+
+# sensor:
+#   - name: Television
+#     platform: enocean
+#     id: [0xFE,0xFB,0xFE,0x61]
 
 # Text to speech
 tts:
@@ -65,8 +93,16 @@ tts:
 #      initial: false 
 #      negate: false 
 
+
+light:
+  - platform: dali
+#    - platform: lifx
+#      #server: 192.168.1.10
+#      name: "ciao"
+     #server: 192.168.1.10
+
 # Example configuration.yaml entry
-#device_tracker:
+# device_tracker:
 #  - platform: bluetooth_le_tracker
 #    discovery: enabled
 #    track_new_devices: True
@@ -83,7 +119,9 @@ notify:
 
 switch:
   - platform: gog 
-  - platform: dali
+  # - platform: dali
+  # - platform: enocean
+  #   id: [0xFE,0xFB,0xFE,0x61]
 
 # automation:
 # - alias: 'Morning Alignment Gong'
@@ -137,6 +175,25 @@ automation:
     - service: notify.slack
       data:
         message: "CIAO from HOME ASSISTANT :smile:"
+# - alias: 'Dali lights automation'
+#   trigger:
+#     platform: time
+#     # When 'after' is used, you cannot also match on hour, minute, seconds.
+#     # Military time format.
+#     after: '16:45:00'
+#   action:
+#     - service: switch.turn_on
+#       entity_id: switch.dali
+- alias: enOcean to Dali
+  trigger:
+    platform: event
+    event_type: button_pressed
+    event_data:
+      id: [0xFE,0xFB,0xFE,0x61]
+      pushed: 0
+  action:
+    - service: switch.turn_on
+      entity_id: switch.dali
 
 group: !include groups.yaml
 
