@@ -169,12 +169,12 @@ automation:
 - alias: 'Slack Notification'
   trigger:
     platform: state
-    entity_id: switch.dali
+    entity_id: light.dali
     to: 'on'
   action:
     - service: notify.slack
       data:
-        message: "CIAO from HOME ASSISTANT :smile:"
+        message: "CIAO from HOME ASSISTANT :smile:, Dali light is ON"
 # - alias: 'Dali lights automation'
 #   trigger:
 #     platform: time
