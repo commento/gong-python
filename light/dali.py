@@ -39,6 +39,12 @@ class DaliLight(Light):
         self.pin_type = 'digital'
         self.direction = 'out'
 
+        # self._light = light
+
+        # # Caching of LightControl and light object
+        # self._light_control = light.light_control
+        # self._light_data = light.light_control.lights[0]
+
         self._state = False #options.get(CONF_INITIAL)
 
         url = 'http://192.168.1.128'
@@ -59,7 +65,7 @@ class DaliLight(Light):
     @property
     def supported_features(self):
         """Flag supported features."""
-        return 1 #self._features
+        return SUPPORT_BRIGHTNESS
 
     @property
     def name(self):
@@ -75,32 +81,15 @@ class DaliLight(Light):
     @property
     def brightness(self):
         """Brightness of the light (an integer in the range 1-255)."""
+        _LOGGER.error("inside brightness")
         return 1 #self._light_data.dimmer
-
-    @property
-    def color_temp(self):
-        """Return the CT color value in mireds."""
-        # if (self._light_data.hex_color is None or
-        #         self.supported_features & SUPPORT_COLOR_TEMP == 0 or
-        #         not self._ok_temps):
-        #     return None
-
-        # kelvin = next((
-        #     kelvin for kelvin, hex_color in self._ok_temps.items()
-        #     if hex_color == self._light_data.hex_color), None)
-        # if kelvin is None:
-        #     _LOGGER.error(
-        #         'unexpected color temperature found for %s: %s',
-        #         self.name, self._light_data.hex_color)
-        #     return
-        return 1 #color_util.color_temperature_kelvin_to_mired(kelvin)
 
     @property
     def rgb_color(self):
         """RGB color of the light."""
         return None
 
-    def turn_on(self):
+    def turn_on(self, **kwargs):
         """Turn the pin to high/on."""
         _LOGGER.error("DALI TURN ON")
 
@@ -120,10 +109,10 @@ class DaliLight(Light):
             self._state = True
         else:
             self._state = False
-            _LOGGER.error("DALI light unexpected state")
+            _LOGGER.error("DALI:turn_on light unexpected state")
 
 
-    def turn_off(self):
+    def turn_off(self, **kwargs):
         """Turn the pin to low/off."""
         _LOGGER.error("DALI TURN OFF")
         self._state = False
@@ -143,7 +132,7 @@ class DaliLight(Light):
 
         if state == 'on':
             self._state = True
-            _LOGGER.error("DALI light unexpected state")
+            _LOGGER.error("DALI:turn_off light unexpected state")
         else:
             self._state = False
 
