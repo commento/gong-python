@@ -192,8 +192,8 @@ automation:
       id: [0xFE,0xFB,0xFE,0x61]
       pushed: 0
   action:
-    - service: switch.turn_on
-      entity_id: switch.dali
+    - service: light.turn_on
+      entity_id: light.dali
 
 group: !include groups.yaml
 
