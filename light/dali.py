@@ -21,7 +21,7 @@ _LOGGER = logging.getLogger(__name__)
 
 PLATFORM_SCHEMA = LIGHT_PLATFORM_SCHEMA
 
-
+urlx = 'http://192.168.1.3'
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Set up the Gong platform."""
@@ -49,7 +49,7 @@ class DaliLight(Light):
         # TODO: change to on
         self._state = False #options.get(CONF_INITIAL)
 
-        url = 'http://192.168.1.191'
+        url = urlx
         headers = {'x-ha-access': 'raspberry',
        'content-type': 'application/json'}
 
@@ -58,6 +58,18 @@ class DaliLight(Light):
         json_data = json.loads(response.text)
 
         state = json_data['state']
+
+        url = urlx + '/dimstate'
+        headers = {'x-ha-access': 'raspberry',
+       'content-type': 'application/json'}
+
+        response = get(url, headers=headers)
+
+        json_data = json.loads(response.text)
+
+        self._dimmer = json_data['dimState']
+
+        _LOGGER.error(self._dimmer)
 
         self._state = state == 'on'
 
@@ -81,7 +93,21 @@ class DaliLight(Light):
     def brightness(self):
         """Brightness of the light (an integer in the range 1-255)."""
         _LOGGER.error("inside brightness")
-        return 200 #self._light_data.dimmer
+        url = urlx + '/dimstate'
+        headers = {'x-ha-access': 'raspberry',
+       'content-type': 'application/json'}
+
+        response = get(url, headers=headers)
+        _LOGGER.error(response.text)
+
+        json_data = json.loads(response.text)
+        _LOGGER.error(json_data)
+
+        state = json_data['dimState']
+
+        self._dimmer = state
+
+        return self._dimmer
 
     @property
     def rgb_color(self):
@@ -92,19 +118,42 @@ class DaliLight(Light):
         """Turn the pin to high/on."""
         _LOGGER.error("DALI TURN ON")
 
-        url = 'http://192.168.1.191/toggle'
-        headers = {'x-ha-access': 'raspberry',
-       'content-type': 'application/json'}
+        self._state = True
 
-        response = get(url, headers=headers)
-        _LOGGER.error(response.text)
 
-        json_data = json.loads(response.text)
-        _LOGGER.error(json_data)
+        if ATTR_BRIGHTNESS in kwargs:
+            _LOGGER.error(kwargs[ATTR_BRIGHTNESS])
+            url = urlx + '/dimset?bri=' + str(kwargs[ATTR_BRIGHTNESS])
+            headers = {'x-ha-access': 'raspberry',
+            'content-type': 'application/json'}
 
-        state = json_data['state']
+            response = get(url, headers=headers)
+            _LOGGER.error(response.text)
 
-        self._state = state == 'on'
+            json_data = json.loads(response.text)
+            _LOGGER.error(json_data)   
+
+            self._dimmer = kwargs[ATTR_BRIGHTNESS]
+
+            if kwargs[ATTR_BRIGHTNESS] == 0:
+                self._state = False
+        else:
+            url = urlx + '/toggle'
+            headers = {'x-ha-access': 'raspberry',
+            'content-type': 'application/json'}
+
+            response = get(url, headers=headers)
+            _LOGGER.error(response.text)
+
+            json_data = json.loads(response.text)
+            _LOGGER.error(json_data)
+
+            state = json_data['state']
+            self._dimmer = 255
+            self._state = state == 'on'
+
+
+        
 
 
     def turn_off(self, **kwargs):
@@ -113,7 +162,7 @@ class DaliLight(Light):
         self._state = False
 
 
-        url = 'http://192.168.1.191/toggle'
+        url = urlx + '/toggle'
         headers = {'x-ha-access': 'raspberry',
        'content-type': 'application/json'}
 
@@ -124,6 +173,8 @@ class DaliLight(Light):
         _LOGGER.error(json_data)
 
         state = json_data['state']
+
+        self._dimmer = 0
 
         self._state = state == 'on'
 
