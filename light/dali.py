@@ -121,7 +121,6 @@ class DaliLight(Light):
 
         self._state = True
 
-
         if ATTR_BRIGHTNESS in kwargs:
             _LOGGER.error(kwargs[ATTR_BRIGHTNESS])
 
@@ -133,13 +132,10 @@ class DaliLight(Light):
                 bri = int(bri / 1.5)
                 _LOGGER.error(bri)
 
-            # if bri > 170:
-            #     bri = 170
-
 
             url = urlx + '/dimset?bri=' + str(bri)
             headers = {'x-ha-access': 'raspberry',
-            'content-type': 'application/json'}
+                'content-type': 'application/json'}
 
             response = get(url, headers=headers)
             _LOGGER.error(response.text)
@@ -152,7 +148,7 @@ class DaliLight(Light):
         else:
             url = urlx + '/toggle'
             headers = {'x-ha-access': 'raspberry',
-            'content-type': 'application/json'}
+                'content-type': 'application/json'}
 
             response = get(url, headers=headers)
             _LOGGER.error(response.text)
@@ -164,16 +160,14 @@ class DaliLight(Light):
             self._dimmer = 255
             self._state = state == 'on'
 
-
     def turn_off(self, **kwargs):
         """Turn the pin to low/off."""
         _LOGGER.error("DALI TURN OFF")
         self._state = False
 
-
         url = urlx + '/toggle'
         headers = {'x-ha-access': 'raspberry',
-       'content-type': 'application/json'}
+            'content-type': 'application/json'}
 
         response = get(url, headers=headers)
         _LOGGER.error(response.text)
