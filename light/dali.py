@@ -105,7 +105,8 @@ class DaliLight(Light):
 
         state = json_data['dimState']
 
-        self._dimmer = state
+        if int(self._dimmer) < 170:
+            self._dimmer = state
 
         return self._dimmer
 
@@ -123,7 +124,17 @@ class DaliLight(Light):
 
         if ATTR_BRIGHTNESS in kwargs:
             _LOGGER.error(kwargs[ATTR_BRIGHTNESS])
-            url = urlx + '/dimset?bri=' + str(kwargs[ATTR_BRIGHTNESS])
+
+            bri = kwargs[ATTR_BRIGHTNESS]
+
+            if bri == 0:
+                self._state = False
+
+            if bri > 170:
+                bri = 170
+
+
+            url = urlx + '/dimset?bri=' + str(bri)
             headers = {'x-ha-access': 'raspberry',
             'content-type': 'application/json'}
 
@@ -135,8 +146,6 @@ class DaliLight(Light):
 
             self._dimmer = kwargs[ATTR_BRIGHTNESS]
 
-            if kwargs[ATTR_BRIGHTNESS] == 0:
-                self._state = False
         else:
             url = urlx + '/toggle'
             headers = {'x-ha-access': 'raspberry',
@@ -149,7 +158,7 @@ class DaliLight(Light):
             _LOGGER.error(json_data)
 
             state = json_data['state']
-            self._dimmer = 255
+            self._dimmer = 170
             self._state = state == 'on'
 
 
