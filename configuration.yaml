@@ -123,6 +123,14 @@ switch:
   # - platform: enocean
   #   id: [0xFE,0xFB,0xFE,0x61]
 
+api: ''
+media_player:
+- hosts:
+  - 192.168.1.71
+  - 192.168.1.73
+  platform: sonos
+websocket_api: ''
+
 # automation:
 # - alias: 'Morning Alignment Gong'
 #   trigger:

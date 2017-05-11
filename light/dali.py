@@ -45,9 +45,11 @@ class DaliLight(Light):
         # self._light_control = light.light_control
         # self._light_data = light.light_control.lights[0]
 
+
+        # TODO: change to on
         self._state = False #options.get(CONF_INITIAL)
 
-        url = 'http://192.168.1.128'
+        url = 'http://192.168.1.191'
         headers = {'x-ha-access': 'raspberry',
        'content-type': 'application/json'}
 
@@ -57,10 +59,7 @@ class DaliLight(Light):
 
         state = json_data['state']
 
-        if state == 'on':
-            self._state = True
-        else:
-            self._state = False
+        self._state = state == 'on'
 
     @property
     def supported_features(self):
@@ -82,7 +81,7 @@ class DaliLight(Light):
     def brightness(self):
         """Brightness of the light (an integer in the range 1-255)."""
         _LOGGER.error("inside brightness")
-        return 1 #self._light_data.dimmer
+        return 200 #self._light_data.dimmer
 
     @property
     def rgb_color(self):
@@ -93,7 +92,7 @@ class DaliLight(Light):
         """Turn the pin to high/on."""
         _LOGGER.error("DALI TURN ON")
 
-        url = 'http://192.168.1.128/toggle'
+        url = 'http://192.168.1.191/toggle'
         headers = {'x-ha-access': 'raspberry',
        'content-type': 'application/json'}
 
@@ -105,11 +104,7 @@ class DaliLight(Light):
 
         state = json_data['state']
 
-        if state == 'on':
-            self._state = True
-        else:
-            self._state = False
-            _LOGGER.error("DALI:turn_on light unexpected state")
+        self._state = state == 'on'
 
 
     def turn_off(self, **kwargs):
@@ -118,7 +113,7 @@ class DaliLight(Light):
         self._state = False
 
 
-        url = 'http://192.168.1.128/toggle'
+        url = 'http://192.168.1.191/toggle'
         headers = {'x-ha-access': 'raspberry',
        'content-type': 'application/json'}
 
@@ -130,10 +125,6 @@ class DaliLight(Light):
 
         state = json_data['state']
 
-        if state == 'on':
-            self._state = True
-            _LOGGER.error("DALI:turn_off light unexpected state")
-        else:
-            self._state = False
+        self._state = state == 'on'
 
 
