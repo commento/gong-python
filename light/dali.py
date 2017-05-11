@@ -67,7 +67,7 @@ class DaliLight(Light):
 
         json_data = json.loads(response.text)
 
-        self._dimmer = json_data['dimState']
+        self._dimmer = int(int(json_data['dimState'])*1.5)
 
         _LOGGER.error(self._dimmer)
 
@@ -103,10 +103,10 @@ class DaliLight(Light):
         json_data = json.loads(response.text)
         _LOGGER.error(json_data)
 
-        state = json_data['dimState']
+        state = int(int(json_data['dimState'])*1.5)
 
-        if int(self._dimmer) < 170:
-            self._dimmer = state
+        # if int(self._dimmer) < 170:
+        self._dimmer = state
 
         return self._dimmer
 
@@ -129,9 +129,12 @@ class DaliLight(Light):
 
             if bri == 0:
                 self._state = False
+            else:
+                bri = int(bri / 1.5)
+                _LOGGER.error(bri)
 
-            if bri > 170:
-                bri = 170
+            # if bri > 170:
+            #     bri = 170
 
 
             url = urlx + '/dimset?bri=' + str(bri)
@@ -158,11 +161,8 @@ class DaliLight(Light):
             _LOGGER.error(json_data)
 
             state = json_data['state']
-            self._dimmer = 170
+            self._dimmer = 255
             self._state = state == 'on'
-
-
-        
 
 
     def turn_off(self, **kwargs):
