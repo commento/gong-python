@@ -21,7 +21,7 @@ _LOGGER = logging.getLogger(__name__)
 
 PLATFORM_SCHEMA = LIGHT_PLATFORM_SCHEMA
 
-urlx = 'http://192.168.1.3'
+urlx = 'http://192.168.1.22'
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Set up the Gong platform."""
