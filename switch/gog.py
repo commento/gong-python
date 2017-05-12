@@ -77,7 +77,9 @@ class GongSwitch(SwitchDevice):
         self.device = AnyDevice(mac_address='C7:59:CD:40:8D:CD', manager=manager)
         self.device.connect()
 
-        threading.Thread(target=manager.run).start()
+        # threading.Thread(target=manager.run).start()
+        t1 = threading.Thread(target=manager.run)
+        t1.start()
 
     @property
     def name(self):
