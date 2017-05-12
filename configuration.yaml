@@ -96,10 +96,10 @@ tts:
 
 light:
   - platform: dali
-#    - platform: lifx
-#      #server: 192.168.1.10
-#      name: "ciao"
-     #server: 192.168.1.10
+  - platform: osramlightify
+    host: 192.168.1.120
+  - platform: lifx
+    server: 192.168.1.12
 
 # Example configuration.yaml entry
 # device_tracker:
@@ -183,15 +183,15 @@ automation:
     - service: notify.slack
       data:
         message: "CIAO from HOME ASSISTANT :smile:, Dali light is ON"
-# - alias: 'Dali lights automation'
-#   trigger:
-#     platform: time
-#     # When 'after' is used, you cannot also match on hour, minute, seconds.
-#     # Military time format.
-#     after: '16:45:00'
-#   action:
-#     - service: switch.turn_on
-#       entity_id: switch.dali
+- alias: 'Dali lights automation'
+  trigger:
+    platform: time
+    # When 'after' is used, you cannot also match on hour, minute, seconds.
+    # Military time format.
+    after: '10:00:00'
+  action:
+    - service: light.turn_on
+      entity_id: light.dali
 - alias: enOcean to Dali
   trigger:
     platform: event
@@ -199,10 +199,21 @@ automation:
     event_data:
       id: [0xFE,0xFB,0xFE,0x61]
       pushed: 0
+      which: 0
   action:
     - service: light.turn_on
       entity_id: light.dali
-
+- alias: enOcean to Sonos
+  trigger:
+    platform: event
+    event_type: button_pressed
+    event_data:
+      id: [0xFE,0xFB,0xFE,0x61]
+      pushed: 0
+      which: 1
+  action:
+    - service: media_player.media_play_pause
+      entity_id: media_player.salotto
 group: !include groups.yaml
 
 
