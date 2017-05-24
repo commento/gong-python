@@ -23,6 +23,10 @@ config:
 logger:
   default: debug
 
+ifttt:
+  key: !secret iftttapikey
+#      xxxxx-x-xxxxxxxxxxxxx
+
 http:
   # Uncomment this to add a password (recommended!)
   # api_password: PASSWORD
@@ -31,6 +35,8 @@ http:
 
 # Checks for available updates
 updater:
+
+mqtt:
 
 # Example configuration.yaml entry
 # device_tracker:
@@ -51,6 +57,7 @@ device_tracker:
   - platform: ping
     hosts:
       hostone: 192.168.1.50
+      hosttwo: 192.168.1.76
 #    count: 5
 
 # Example configuration.yaml entry
@@ -208,30 +215,12 @@ automation:
 - alias: 'Dali lights automation'
   trigger:
     platform: time
+    # When 'after' is used, you cannot also match on hour, minute, seconds.
+    # Military time format.
     after: '10:00:00'
   action:
     - service: light.turn_on
       entity_id: light.dali
-
-- alias: 'Dali lights automation'
-  trigger:
-    platform: time
-    after: '10:00:00'
-  action:
-    - service: light.turn_on
-      entity_id: light.dali
-    - service: tts.google_say
-      entity_id: media_player.office
-      message: "hello Alexa"
-
-- alias: 'Start Sonos Playlist from Favourites'
-  trigger:
-    platform: time
-    after: '10:00:00'
-  action:
-    - service: media_player.select_source
-      entity_id: media_player.office
-      source: Lullaby
 
 - alias: 'Dali on if home'
   trigger:
@@ -242,6 +231,16 @@ automation:
   action:
     - service: light.turn_on
       entity_id: light.dali
+
+- alias: 'send telegram via IFTTT to Riccardo if Lars is at the office'
+  trigger:
+    platform: state
+    entity_id: device_tracker.hosttwo
+    from: 'not_home'
+    to: 'home'
+  action:
+    - service: ifttt.trigger
+      data: {"event":"button_pressed"}
 
 - alias: enOcean to Dali
   trigger:
