@@ -20,6 +20,9 @@ frontend:
 # Enables configuration UI
 config:
 
+logger:
+  default: debug
+
 http:
   # Uncomment this to add a password (recommended!)
   # api_password: PASSWORD
@@ -33,6 +36,22 @@ updater:
 # device_tracker:
 #   - platform: nmap_tracker
 #     hosts: 192.168.1.1/24
+device_tracker:
+  - platform: nmap_tracker
+    hosts: 192.168.1.50
+#    exclude:
+#      - 192.168.1.12
+    consider_home: 600
+    interval_seconds: 10
+    home_interval: 5
+#    scan_options: " --privileged -sP "
+    scan_options: " --privileged -sS -O -p 4000 -Pn "
+#    home_interval: 10
+#device_tracker:
+  - platform: ping
+    hosts:
+      hostone: 192.168.1.50
+#    count: 5
 
 # Example configuration.yaml entry
 # device_tracker:
@@ -90,15 +109,15 @@ tts:
 #  pins:
 #    13:
 #      name: Light Desk
-#      initial: false 
-#      negate: false 
+#      initial: false
+#      negate: false
 
 
 light:
   - platform: dali
   - platform: osramlightify
     host: 192.168.1.120
-  - platform: lifx
+  - platform: lifx_legacy
     server: 192.168.1.12
 
 # Example configuration.yaml entry
@@ -118,7 +137,7 @@ notify:
     icon: ":house_with_garden:"
 
 switch:
-  - platform: gog 
+  - platform: gog
   # - platform: dali
   # - platform: enocean
   #   id: [0xFE,0xFB,0xFE,0x61]
@@ -142,7 +161,7 @@ websocket_api: ''
 #     - service: switch.turn_on
 
 # switch:
-#   platform: dali 
+#   platform: dali
 
 automation:
 - alias: '10.00 Daily Alignment Gong'
@@ -161,6 +180,7 @@ automation:
   action:
     - service: switch.turn_on
       entity_id: switch.gong
+
 - alias: '9.00 Monday Alignment Gong'
   trigger:
     platform: time
@@ -174,6 +194,7 @@ automation:
   action:
     - service: switch.turn_on
       entity_id: switch.gong
+
 - alias: 'Slack Notification'
   trigger:
     platform: state
@@ -183,15 +204,45 @@ automation:
     - service: notify.slack
       data:
         message: "CIAO from HOME ASSISTANT :smile:, Dali light is ON"
+
 - alias: 'Dali lights automation'
   trigger:
     platform: time
-    # When 'after' is used, you cannot also match on hour, minute, seconds.
-    # Military time format.
     after: '10:00:00'
   action:
     - service: light.turn_on
       entity_id: light.dali
+
+- alias: 'Dali lights automation'
+  trigger:
+    platform: time
+    after: '10:00:00'
+  action:
+    - service: light.turn_on
+      entity_id: light.dali
+    - service: tts.google_say
+      entity_id: media_player.office
+      message: "hello Alexa"
+
+- alias: 'Start Sonos Playlist from Favourites'
+  trigger:
+    platform: time
+    after: '10:00:00'
+  action:
+    - service: media_player.select_source
+      entity_id: media_player.office
+      source: Lullaby
+
+- alias: 'Dali on if home'
+  trigger:
+    platform: state
+    entity_id: device_tracker.hostone
+    from: 'not_home'
+    to: 'home'
+  action:
+    - service: light.turn_on
+      entity_id: light.dali
+
 - alias: enOcean to Dali
   trigger:
     platform: event
@@ -203,6 +254,7 @@ automation:
   action:
     - service: light.turn_on
       entity_id: light.dali
+
 - alias: enOcean to Sonos
   trigger:
     platform: event
@@ -214,6 +266,7 @@ automation:
   action:
     - service: media_player.media_play_pause
       entity_id: media_player.salotto
+
 group: !include groups.yaml
 
 
