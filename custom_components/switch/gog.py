@@ -56,7 +56,7 @@ class AnyDevice(gatt.Device):
         characteristic2.enable_notifications()
         _LOGGER.error("written value characteristic2")
 
-        characteristic.write_value([120]) 
+        characteristic.write_value([120])
         _LOGGER.error("written value characteristic")
 
 

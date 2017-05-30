@@ -51,7 +51,7 @@ class AnyDevice(gatt.Device):
         characteristic2.enable_notifications()
         _LOGGER.error("written value characteristic2")
 
-        characteristic.write_value([120]) 
+        characteristic.write_value([120])
         _LOGGER.error("written value characteristic")
 
 
@@ -95,7 +95,11 @@ class GongSwitch(SwitchDevice):
         """Turn the pin to high/on."""
         _LOGGER.error("TURN ON")
         #self._state = True
-
+        # if(self.device.is_connected()):
+        #     self.device.play_gong()
+        # else:
+        #     _LOGGER.error("disconnected, connect first")
+        #     self.device.connect()
         self.device.play_gong()
 
     def turn_off(self):
