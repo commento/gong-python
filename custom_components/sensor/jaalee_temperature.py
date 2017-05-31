@@ -1,5 +1,5 @@
 """
-Read temperature information from Eddystone beacons.
+Read temperature information from Jaalee beacons.
 
 Your beacons must be configured to transmit UID (for identification) and TLM
 (for temperature) frames.
@@ -31,7 +31,7 @@ manager = gatt.DeviceManager(adapter_name='hci0')
 
 _LOGGER = logging.getLogger(__name__)
 
-temp = 0
+temp = STATE_UNKNOWN
 
 class AnyDevice(gatt.Device):
 
@@ -73,47 +73,41 @@ class AnyDevice(gatt.Device):
         hexvalue = binascii.hexlify(value)
         intvalue = int(hexvalue, 16)
         _LOGGER.info(intvalue)
-        temp = -46.86 + 175.72 * (intvalue/65536)
-        _LOGGER.info(temp)
+        if intvalue != 0:
+            global temp
+            temp = -46.86 + 175.72 * (intvalue/65536)
+            '%.3f'%(temp)
+            _LOGGER.info(temp)
 
 # pylint: disable=unused-argument
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Validate configuration, create devices and start monitoring thread."""
-    #bt_device_id = "Temperature" #config.get("bt_device_id")
 
-    #beacons = config.get("beacons")
     devices = []
 
-    devices.append(EddystoneTemp())
+    devices.append(JaaleeTemp())
 
     if devices:
-        mon = Monitor(hass, devices)
-
-        def monitor_stop(_service_or_event):
-            """Stop the monitor thread."""
-            _LOGGER.info("Stopping scanner for Eddystone beacons")
-            mon.stop()
-
-        def monitor_start(_service_or_event):
-            """Start the monitor thread."""
-            _LOGGER.info("Starting scanner for Eddystone beacons")
-            mon.start()
-
         add_devices(devices)
-        mon.start()
-        hass.bus.listen_once(EVENT_HOMEASSISTANT_STOP, monitor_stop)
-        hass.bus.listen_once(EVENT_HOMEASSISTANT_START, monitor_start)
     else:
         _LOGGER.warning("No devices were added")
 
 
-class EddystoneTemp(Entity):
+class JaaleeTemp(Entity):
     """Representation of a temperature sensor."""
 
     def __init__(self):
         """Initialize a sensor."""
-        self._name = "CIAO"
+        self._name = "iBeaconTemperature"
         self.temperature = STATE_UNKNOWN
+
+        self.device = AnyDevice(mac_address='FF:F3:F0:A2:1A:35', manager=manager)
+
+        self.device.connect()
+        _LOGGER.info("device.connect()")
+
+        t1 = threading.Thread(target=manager.run)
+        t1.start()
 
     @property
     def name(self):
@@ -130,98 +124,21 @@ class EddystoneTemp(Entity):
         """Return the unit the value is expressed in."""
         return TEMP_CELSIUS
 
-    @property
-    def should_poll(self):
-        """Return the polling state."""
-        return False
+    def update(self):
+        """Get the latest value from the pin."""
+        if(self.device.is_connected()):
+             _LOGGER.info("is connected")
+            self.device.temperature_read()
+        else:
+            self.device.connect()
+            _LOGGER.info("is not connected, reconnect")
+            self.device.temperature_read()
+        #for dev in self.devices:
+        _LOGGER.info(self.device)
 
+        global temp
+        _LOGGER.info(temp)
+        _LOGGER.info(self.temperature)
+        if self.temperature != temp:
+            self.temperature = temp
 
-class Monitor(object):
-    """Continously scan for BLE advertisements."""
-
-    def __init__(self, hass, devices):
-        """Construct interface object."""
-        self.hass = hass
-
-        # List of beacons to monitor
-        self.devices = devices
-        # Number of the bt device (hciX)
-        #self.bt_device_id = 0
-
-        # def callback(bt_addr, _, packet, additional_info):
-        #     """Handle new packets."""
-        #     self.process_packet()
-
-        # pylint: disable=import-error
-        # from beacontools import (
-        #     BeaconScanner, EddystoneFilter, EddystoneTLMFrame)
-        # device_filters = [EddystoneFilter(d.namespace, d.instance)
-        #                   for d in devices]
-
-        # self.scanner = BeaconScanner(
-        #     callback, 0)
-        # self.scanning = False
-
-    def start(self):
-
-        device = AnyDevice(mac_address='FF:F3:F0:A2:1A:35', manager=manager)
-        device.connect()
-        _LOGGER.info("device.connect()")
-
-        t1 = threading.Thread(target=manager.run)
-        t1.start()
-        prev_update_time = time()
-
-        while True:
-            now = time()
-            if now - prev_update_time >= 60:
-                _LOGGER.info("temperature update")
-                if(device.is_connected()):
-                    device.temperature_read()
-                else:
-                    device.connect()
-                    device.temperature_read()
-                for dev in self.devices:
-                    _LOGGER.info(dev)
-                    _LOGGER.info(temp)
-                    _LOGGER.info(dev.temperature)
-                    if temp != dev.temperature:
-                        dev.temperature = temp
-                    #     dev.schedule_update_ha_state()
-                prev_update_time = now
-
-            sleep(0.05)
-        """Continously scan for BLE advertisements."""
-        # if not self.scanning:
-        #     self.scanner.start()
-        #     self.scanning = True
-        # else:
-        #     _LOGGER.debug(
-        #         "start() called, but scanner is already running")
-
-
-
-    # def process_packet(self, namespace, instance, temperature):
-    #     """Assign temperature to device."""
-    #     _LOGGER.debug("Received temperature for <%s,%s>: %d",
-    #                   namespace, instance, temperature)
-
-    #     for dev in self.devices:
-    #         if dev.namespace == namespace and dev.instance == instance:
-    #             if dev.temperature != temperature:
-    #                 dev.temperature = temperature
-    #                 dev.schedule_update_ha_state()
-
-    def stop(self):
-        _LOGGER.info("manager.stop()")
-        manager.stop()
-
-        """Signal runner to stop and join thread."""
-        # if self.scanning:
-        #     _LOGGER.debug("Stopping...")
-        #     self.scanner.stop()
-        #     _LOGGER.debug("Stopped")
-        #     self.scanning = False
-        # else:
-        #     _LOGGER.debug(
-        #         "stop() called but scanner was not running")
