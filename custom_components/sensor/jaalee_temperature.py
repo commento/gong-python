@@ -1,8 +1,7 @@
 """
 Read temperature information from Jaalee beacons.
 
-Your beacons must be configured to transmit UID (for identification) and TLM
-(for temperature) frames.
+Your beacons must be configured to transmit temperature with the eBeacon app.
 
 For more details about this platform, please refer to the documentation at
 https://home-assistant.io/components/sensor.eddystone_temperature/
@@ -69,7 +68,8 @@ class AnyDevice(gatt.Device):
         _LOGGER.info("read value characteristic")
 
     def characteristic_value_updated(self, characteristic, value):
-        #_LOGGER.info(value)
+
+        # TODO: conversion can be moved from here to the Jaalee Temperature Entity
         hexvalue = binascii.hexlify(value)
         intvalue = int(hexvalue, 16)
         _LOGGER.info(intvalue)
@@ -85,6 +85,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 
     devices = []
 
+    # TODO: configure more device with the same component
     devices.append(JaaleeTemp())
 
     if devices:
@@ -101,6 +102,7 @@ class JaaleeTemp(Entity):
         self._name = "iBeaconTemperature"
         self.temperature = STATE_UNKNOWN
 
+        # TODO: add a configurable mac address
         self.device = AnyDevice(mac_address='FF:F3:F0:A2:1A:35', manager=manager)
 
         self.device.connect()
@@ -133,7 +135,6 @@ class JaaleeTemp(Entity):
             self.device.connect()
             _LOGGER.info("is not connected, reconnect")
             self.device.temperature_read()
-        #for dev in self.devices:
         _LOGGER.info(self.device)
 
         global temp
