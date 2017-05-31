@@ -76,7 +76,7 @@ class AnyDevice(gatt.Device):
         if intvalue != 0:
             global temp
             temp = -46.86 + 175.72 * (intvalue/65536)
-            '%.3f'%(temp)
+            temp = '%.3f'%(temp)
             _LOGGER.info(temp)
 
 # pylint: disable=unused-argument
