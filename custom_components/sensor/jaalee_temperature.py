@@ -127,7 +127,7 @@ class JaaleeTemp(Entity):
     def update(self):
         """Get the latest value from the pin."""
         if(self.device.is_connected()):
-             _LOGGER.info("is connected")
+            _LOGGER.info("is connected")
             self.device.temperature_read()
         else:
             self.device.connect()
