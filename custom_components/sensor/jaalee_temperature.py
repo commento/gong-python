@@ -21,7 +21,7 @@ from homeassistant.const import (
     CONF_NAME, TEMP_CELSIUS, STATE_UNKNOWN, EVENT_HOMEASSISTANT_STOP,
     EVENT_HOMEASSISTANT_START)
 
-REQUIREMENTS = ['gatt==0.2.2']
+REQUIREMENTS = ['gatt==0.2.3']
 
 SERVICE = '0000ffb0-0000-1000-8000-00805f9b34fb'
 CHARACTERISTIC = '0000ffb1-0000-1000-8000-00805f9b34fb'
@@ -30,9 +30,29 @@ manager = gatt.DeviceManager(adapter_name='hci0')
 
 _LOGGER = logging.getLogger(__name__)
 
-temp = STATE_UNKNOWN
+entities = []
 
-class AnyDevice(gatt.Device):
+# pylint: disable=unused-argument
+def setup_platform(hass, config, add_devices, discovery_info=None):
+    """Validate configuration, create devices and start monitoring thread."""
+
+    devices = []
+    # TODO: configure more device with the same component
+    global entities
+    entity = JaaleeEntity('FF:F3:F0:A2:1A:35')
+    devices.append(entity)
+
+    if devices:
+        add_devices(devices)
+    else:
+        _LOGGER.warning("No devices were added")
+
+class JaaleeDevice(gatt.Device):
+
+    def __init__(self, mac_address, jaalee_entity):
+        global manager
+        super().__init__(mac_address, manager)
+        self.jaalee_entity = jaalee_entity
 
     def connect_succeeded(self):
         super().connect_succeeded()
@@ -49,13 +69,7 @@ class AnyDevice(gatt.Device):
     def services_resolved(self):
         super().services_resolved()
 
-        _LOGGER.info("[%s] Resolved services" % (self.mac_address))
-        for service in self.services:
-            _LOGGER.info("[%s]  Service [%s]" % (self.mac_address, service.uuid))
-            for characteristic in service.characteristics:
-                _LOGGER.info("[%s]    Characteristic [%s]" % (self.mac_address, characteristic.uuid))
-
-    def temperature_read(self):
+    def read_temperature(self):
         device_information_service = next(
             s for s in self.services
             if s.uuid == SERVICE)
@@ -68,42 +82,30 @@ class AnyDevice(gatt.Device):
         _LOGGER.info("read value characteristic")
 
     def characteristic_value_updated(self, characteristic, value):
-
-        # TODO: conversion can be moved from here to the Jaalee Temperature Entity
         hexvalue = binascii.hexlify(value)
         intvalue = int(hexvalue, 16)
         _LOGGER.info(intvalue)
         if intvalue != 0:
-            global temp
-            temp = -46.86 + 175.72 * (intvalue/65536)
-            temp = '%.3f'%(temp)
-            _LOGGER.info(temp)
+            temperature = -46.86 + 175.72 * (intvalue/65536)
+            self.jaalee_entity.temperature = '%.3f'%(temperature)
+        else:
+            self.jaalee_entity.temperature = STATE_UNKNOWN
+        _LOGGER.info(self.jaalee_entity.temperature)
 
-# pylint: disable=unused-argument
-def setup_platform(hass, config, add_devices, discovery_info=None):
-    """Validate configuration, create devices and start monitoring thread."""
+    def characteristic_read_value_failed(self, characteristic, error):
+        _LOGGER.info("characteristic_read_value_failed, set temperature to STATE_UNKNOWN")
+        self.jaalee_entity.temperature = STATE_UNKNOWN
 
-    devices = []
-
-    # TODO: configure more device with the same component
-    devices.append(JaaleeTemp())
-
-    if devices:
-        add_devices(devices)
-    else:
-        _LOGGER.warning("No devices were added")
-
-
-class JaaleeTemp(Entity):
+class JaaleeEntity(Entity):
     """Representation of a temperature sensor."""
 
-    def __init__(self):
+    def __init__(self, mac_address):
         """Initialize a sensor."""
         self._name = "iBeaconTemperature"
         self.temperature = STATE_UNKNOWN
 
         # TODO: add a configurable mac address
-        self.device = AnyDevice(mac_address='FF:F3:F0:A2:1A:35', manager=manager)
+        self.device = JaaleeDevice(mac_address, self)
 
         self.device.connect()
         _LOGGER.info("device.connect()")
@@ -128,18 +130,11 @@ class JaaleeTemp(Entity):
 
     def update(self):
         """Get the latest value from the pin."""
-        if(self.device.is_connected()):
+        if self.device.is_connected():
             _LOGGER.info("is connected")
-            self.device.temperature_read()
+            self.device.read_temperature()
         else:
             self.device.connect()
             _LOGGER.info("is not connected, reconnect")
-            self.device.temperature_read()
+            self.device.read_temperature()
         _LOGGER.info(self.device)
-
-        global temp
-        _LOGGER.info(temp)
-        _LOGGER.info(self.temperature)
-        if self.temperature != temp:
-            self.temperature = temp
-
