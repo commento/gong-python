@@ -7,6 +7,12 @@ from time import sleep, time
 SERVICE = '0000aa10-0000-1000-8000-00805f9b34fb'
 CHARACTERISTIC = '0000aa16-0000-1000-8000-00805f9b34fb' #16 button - 12 motion
 
+SERPASS = '0000fff0-0000-1000-8000-00805f9b34fb'
+CHARPASS = '0000fff1-0000-1000-8000-00805f9b34fb'
+
+PASSWORD = 0x666666
+
+
 manager = gatt.DeviceManager(adapter_name='hci0')
 
 
@@ -32,6 +38,16 @@ class AnyDevice(gatt.Device):
             print("[%s]  Service [%s]" % (self.mac_address, service.uuid))
             for characteristic in service.characteristics:
                 print("[%s]    Characteristic [%s]" % (self.mac_address, characteristic.uuid))
+
+        device_information_service = next(
+            s for s in self.services
+            if s.uuid == SERPASS)
+
+        characteristic = next(
+            c for c in device_information_service.characteristics
+            if c.uuid == CHARPASS)
+
+        characteristic.write_value([102, 102, 102])
 
         device_information_service = next(
             s for s in self.services
@@ -62,18 +78,18 @@ class AnyDevice(gatt.Device):
         super().characteristic_enable_notifications_failed(characteristic, error)
         print("characteristic_enable_notifications_failed")
 
-    def temperature_read(self):
-        device_information_service = next(
-            s for s in self.services
-            if s.uuid == SERVICE)
+    # def temperature_read(self):
+    #     device_information_service = next(
+    #         s for s in self.services
+    #         if s.uuid == SERVICE)
 
-        characteristic = next(
-            c for c in device_information_service.characteristics
-            if c.uuid == CHARACTERISTIC)
-        #if self.is_connected() is True:
-        print("enable notification characteristic")
-        characteristic.enable_notifications()
-        print("read value from characteristic")
+    #     characteristic = next(
+    #         c for c in device_information_service.characteristics
+    #         if c.uuid == CHARACTERISTIC)
+    #     #if self.is_connected() is True:
+    #     print("enable notification characteristic")
+    #     characteristic.enable_notifications()
+    #     print("read value from characteristic")
 
     def characteristic_value_updated(self, characteristic, value):
         super().characteristic_enable_notifications_failed(characteristic, value)

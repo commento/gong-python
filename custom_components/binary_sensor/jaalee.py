@@ -27,6 +27,9 @@ REQUIREMENTS = ['gatt==0.2.3']
 SERVICE = '0000aa10-0000-1000-8000-00805f9b34fb'
 CHARACTERISTIC = '0000aa16-0000-1000-8000-00805f9b34fb'
 
+SERPASS = '0000fff0-0000-1000-8000-00805f9b34fb'
+CHARPASS = '0000fff1-0000-1000-8000-00805f9b34fb'
+
 manager = gatt.DeviceManager(adapter_name='hci0')
 
 _LOGGER = logging.getLogger(__name__)
@@ -55,7 +58,17 @@ class JaaleeDevice(gatt.Device):
     def services_resolved(self):
         super().services_resolved()
 
-    def read_state(self):
+        # insert password
+        device_information_service = next(
+            s for s in self.services
+            if s.uuid == SERPASS)
+
+        characteristic = next(
+            c for c in device_information_service.characteristics
+            if c.uuid == CHARPASS)
+
+        characteristic.write_value([102, 102, 102])
+
         device_information_service = next(
             s for s in self.services
             if s.uuid == SERVICE)
@@ -63,21 +76,27 @@ class JaaleeDevice(gatt.Device):
         characteristic = next(
             c for c in device_information_service.characteristics
             if c.uuid == CHARACTERISTIC)
+        #if self.is_connected() is True:
+        _LOGGER.info("enable notification characteristic")
+        #characteristic.read_value()
+        _LOGGER.info(characteristic)
+        characteristic.enable_notifications()
 
-        _LOGGER.info(characteristic.read_value())
-        _LOGGER.info("read value characteristic")
 
     def characteristic_value_updated(self, characteristic, value):
         _LOGGER.info(value)
-        # hexvalue = binascii.hexlify(value)
-        # intvalue = int(hexvalue, 16)
-        # _LOGGER.info(intvalue)
-        # if intvalue != 0:
-        #     temperature = -46.86 + 175.72 * (intvalue/65536)
-        #     self.jaalee_entity.temperature = '%.3f'%(temperature)
-        # else:
-        #     self.jaalee_entity.temperature = STATE_UNKNOWN
-        # _LOGGER.info(self.jaalee_entity.temperature)
+        hexvalue = binascii.hexlify(value)
+        _LOGGER.info(hexvalue)
+
+        if hexvalue == 0x01:
+            _LOGGER.info("click")
+
+        elif hexvalue == 0x03:
+            _LOGGER.info("long click")
+
+        self.jaalee_entity._state = not self.jaalee_entity._state
+        # self.jaalee_entity.update()
+
 
     def characteristic_read_value_failed(self, characteristic, error):
         _LOGGER.info("characteristic_read_value_failed, set temperature to STATE_UNKNOWN")
@@ -116,7 +135,7 @@ class JaaleeBinarySensor(BinarySensorDevice):
 
         t1 = threading.Thread(target=manager.run)
         t1.start()
-        self.update()
+        # self.update()
 
     @property
     def name(self):
@@ -128,16 +147,9 @@ class JaaleeBinarySensor(BinarySensorDevice):
         """Return true if the binary sensor is on."""
         return self._state
 
-    def update(self):
-        """Get the latest value from the pin."""
-        if self.device.is_connected():
-            _LOGGER.info("is connected")
-            self.device.read_state()
-        else:
-            self.device.connect()
-            _LOGGER.info("is not connected, reconnect")
-            self.device.read_state()
-        _LOGGER.info(self.device)
+    # def update(self):
+    #     """Get the latest value from the pin."""
+    #     _LOGGER.info(self.device)
 
     # @property
     # def device_class(self):
