@@ -50,10 +50,12 @@ class JaaleeDevice(gatt.Device):
     def connect_failed(self, error):
         super().connect_failed(error)
         _LOGGER.info("[%s] Connection failed: %s" % (self.mac_address, str(error)))
+        # self.connect()
 
     def disconnect_succeeded(self):
         super().disconnect_succeeded()
         _LOGGER.info("[%s] Disconnected" % (self.mac_address))
+        # self.connect()
 
     def services_resolved(self):
         super().services_resolved()
@@ -76,12 +78,11 @@ class JaaleeDevice(gatt.Device):
         characteristic = next(
             c for c in device_information_service.characteristics
             if c.uuid == CHARACTERISTIC)
-        #if self.is_connected() is True:
+
         _LOGGER.info("enable notification characteristic")
-        #characteristic.read_value()
+
         _LOGGER.info(characteristic)
         characteristic.enable_notifications()
-
 
     def characteristic_value_updated(self, characteristic, value):
         _LOGGER.info(value)
@@ -95,13 +96,11 @@ class JaaleeDevice(gatt.Device):
             _LOGGER.info("long click")
 
         self.jaalee_entity._state = not self.jaalee_entity._state
-        # self.jaalee_entity.update()
-
+        _LOGGER.info(self.jaalee_entity._state)
+        self.jaalee_entity.update()
 
     def characteristic_read_value_failed(self, characteristic, error):
         _LOGGER.info("characteristic_read_value_failed, set temperature to STATE_UNKNOWN")
-#        self.jaalee_entity.temperature = STATE_UNKNOWN
-
 
 # pylint: disable=unused-argument
 def setup_platform(hass, config, add_devices, discovery_info=None):
@@ -117,7 +116,6 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
         add_devices(devices)
     else:
         _LOGGER.warning("No devices were added")
-
 
 class JaaleeBinarySensor(BinarySensorDevice):
     """Representation of a temperature sensor."""
@@ -135,7 +133,7 @@ class JaaleeBinarySensor(BinarySensorDevice):
 
         t1 = threading.Thread(target=manager.run)
         t1.start()
-        # self.update()
+        self.update()
 
     @property
     def name(self):
@@ -147,11 +145,12 @@ class JaaleeBinarySensor(BinarySensorDevice):
         """Return true if the binary sensor is on."""
         return self._state
 
-    # def update(self):
-    #     """Get the latest value from the pin."""
-    #     _LOGGER.info(self.device)
-
-    # @property
-    # def device_class(self):
-    #     """Return the class of this sensor."""
-    #     return self._device_class
+    def update(self):
+        """Get the latest value from the pin."""
+        if self.device.is_connected():
+            _LOGGER.info("is connected")
+            # self.device.read_state()
+        else:
+            self.device.connect()
+            _LOGGER.info("is not connected, reconnect")
+            # self.device.read_state()

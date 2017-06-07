@@ -22,10 +22,28 @@ config:
 
 logger:
   default: debug
+  logs:
+    homeassistant.components.light: warning
+
+#logger:
+#  default: warning
+#  logs:
+#    homeassistant.components.device_tracker: debug
 
 ifttt:
   key: !secret iftttapikey
-#      xxxxx-x-xxxxxxxxxxxxx
+
+knx:
+  host: 192.168.1.38
+
+sensor:
+  - platform: jaalee_temperature
+
+#  - platform: eddystone_temperature
+#    beacons:
+#      jaalee:
+#        namespace: "EBEFD08370A247C89837"
+#        instance: "E7B5634DF524"
 
 http:
   # Uncomment this to add a password (recommended!)
@@ -36,36 +54,26 @@ http:
 # Checks for available updates
 updater:
 
-mqtt:
+#mqtt:
 
 # Example configuration.yaml entry
-# device_tracker:
-#   - platform: nmap_tracker
-#     hosts: 192.168.1.1/24
 device_tracker:
   - platform: nmap_tracker
-    hosts: 192.168.1.50
-#    exclude:
-#      - 192.168.1.12
-    consider_home: 600
-    interval_seconds: 10
-    home_interval: 5
-#    scan_options: " --privileged -sP "
+    hosts:
+      - 192.168.1.50
+      - 192.168.1.76
     scan_options: " --privileged -sS -O -p 4000 -Pn "
-#    home_interval: 10
-#device_tracker:
   - platform: ping
     hosts:
       hostone: 192.168.1.50
-      hosttwo: 192.168.1.76
-#    count: 5
-
-# Example configuration.yaml entry
-# device_tracker:
-#   - platform: cisco_ios
-#     host: 192.168.1.1
-#     username: !secret YOUR_ADMIN_USERNAME
-#     password: !secret YOUR_ADMIN_PASSWORD
+#      hosttwo: 192.168.1.76
+#    interval_seconds: 5
+#    consider_home: 30
+    interval_seconds: 10
+    consider_home: 180
+#  - platform: icloud
+#    username: USERNAME
+#    password: PASSWORD
 
 # Discover some devices automatically
 discovery:
@@ -93,6 +101,12 @@ binary_sensor:
   - platform: enocean
     name: "button sensor"
     id: [0xFE,0xFB,0xFE,0x61]
+  - platform: knx
+    name: "knxBinarySensor"
+    address: 0/0/0
+binary_sensor 2:
+  platform: jaalee
+  scan_interval: 1
   # - platform: enocean
   #   name: "no-button sensor"
   #   id: [0xE2,0x15,0x00,0x00,0x1E,0xE7]
@@ -145,6 +159,9 @@ notify:
 
 switch:
   - platform: gog
+  - platform: knx
+    name: KNX Switch
+    address: 0/0/0
   # - platform: dali
   # - platform: enocean
   #   id: [0xFE,0xFB,0xFE,0x61]
@@ -156,19 +173,6 @@ media_player:
   - 192.168.1.73
   platform: sonos
 websocket_api: ''
-
-# automation:
-# - alias: 'Morning Alignment Gong'
-#   trigger:
-#     platform: time
-#     # When 'after' is used, you cannot also match on hour, minute, seconds.
-#     # Military time format.
-#     after: '10:00:00'
-#   action:
-#     - service: switch.turn_on
-
-# switch:
-#   platform: dali
 
 automation:
 - alias: '10.00 Daily Alignment Gong'
@@ -222,6 +226,26 @@ automation:
     - service: light.turn_on
       entity_id: light.dali
 
+- alias: 'Dali on if iBeacon'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.ibeaconbinary
+    from: 'off'
+    to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.dali
+
+- alias: 'Dali off if iBeacon'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.ibeaconbinary
+    from: 'on'
+    to: 'off'
+  action:
+    - service: light.turn_on
+      entity_id: light.dali
+
 - alias: 'Dali on if home'
   trigger:
     platform: state
@@ -235,7 +259,10 @@ automation:
 - alias: 'send telegram via IFTTT to Riccardo if Lars is at the office'
   trigger:
     platform: state
-    entity_id: device_tracker.hosttwo
+#    entity_id: device_tracker.hostone
+#    entity_id: device_tracker.hosttwo
+    entity_id: device_tracker.28e14c992191
+#    entity_id: device_tracker.408805e5946b
     from: 'not_home'
     to: 'home'
   action:

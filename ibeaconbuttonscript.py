@@ -25,10 +25,12 @@ class AnyDevice(gatt.Device):
     def connect_failed(self, error):
         super().connect_failed(error)
         print("[%s] Connection failed: %s" % (self.mac_address, str(error)))
+        # self.connect()
 
     def disconnect_succeeded(self):
         super().disconnect_succeeded()
         print("[%s] Disconnected" % (self.mac_address))
+        # self.connect()
 
     def services_resolved(self):
         super().services_resolved()
@@ -56,40 +58,17 @@ class AnyDevice(gatt.Device):
         characteristic = next(
             c for c in device_information_service.characteristics
             if c.uuid == CHARACTERISTIC)
-        #if self.is_connected() is True:
+
         print("enable notification characteristic")
-        #characteristic.read_value()
-        print(characteristic)
         characteristic.enable_notifications()
 
     def characteristic_enable_notifications_succeeded(self, characteristic):
         super().characteristic_enable_notifications_succeeded(characteristic)
         print("characteristic_enable_notifications_succeeded")
-        # device_information_service = next(
-        #     s for s in self.services
-        #     if s.uuid == SERVICE)
-        print(characteristic)
-        # characteristic = next(
-        #     c for c in device_information_service.characteristics
-        #     if c.uuid == CHARACTERISTIC)
-        #characteristic.read_value()
 
     def characteristic_enable_notifications_failed(self, characteristic, error):
         super().characteristic_enable_notifications_failed(characteristic, error)
         print("characteristic_enable_notifications_failed")
-
-    # def temperature_read(self):
-    #     device_information_service = next(
-    #         s for s in self.services
-    #         if s.uuid == SERVICE)
-
-    #     characteristic = next(
-    #         c for c in device_information_service.characteristics
-    #         if c.uuid == CHARACTERISTIC)
-    #     #if self.is_connected() is True:
-    #     print("enable notification characteristic")
-    #     characteristic.enable_notifications()
-    #     print("read value from characteristic")
 
     def characteristic_value_updated(self, characteristic, value):
         super().characteristic_enable_notifications_failed(characteristic, value)
@@ -106,19 +85,10 @@ t1.start()
 prev_update_time = time()
 
 while True:
-    # now = time()
-    # if now - prev_update_time >= 5:
-    #     print("temperature update")
-    #     if(device.is_connected()):
-    #         device.temperature_read()
-    #     else:
-    #         device.connect()
-    #         device.temperature_read()
-    #     prev_update_time = now
     name = input("x ")
     if name == "x":
         manager.stop()
         break
-    if device.is_connected() is not True:
-        device.connect()
+    # if device.is_connected() is not True:
+    #     device.connect()
     sleep(0.05)
