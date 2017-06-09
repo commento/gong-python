@@ -12,7 +12,7 @@ from homeassistant.const import CONF_NAME
 
 _LOGGER = logging.getLogger(__name__)
 
-REQUIREMENTS = ['gatt==0.2.2']
+REQUIREMENTS = ['gatt==0.2.3']
 
 SERVICE = '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
 CHARACTERISTIC2 = '6e400003-b5a3-f393-e0a9-e50e24dcca9e' #HEX VALUE of char "x" = 0x78
