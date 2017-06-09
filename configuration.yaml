@@ -66,9 +66,6 @@ device_tracker:
   - platform: ping
     hosts:
       hostone: 192.168.1.50
-#      hosttwo: 192.168.1.76
-#    interval_seconds: 5
-#    consider_home: 30
     interval_seconds: 10
     consider_home: 180
 #  - platform: icloud
@@ -178,8 +175,6 @@ automation:
 - alias: '10.00 Daily Alignment Gong'
   trigger:
     platform: time
-    # When 'after' is used, you cannot also match on hour, minute, seconds.
-    # Military time format.
     after: '10:00:00'
   condition:
   - condition: time
@@ -195,8 +190,6 @@ automation:
 - alias: '9.00 Monday Alignment Gong'
   trigger:
     platform: time
-    # When 'after' is used, you cannot also match on hour, minute, seconds.
-    # Military time format.
     after: '9:00:00'
   condition:
   - condition: time
@@ -219,8 +212,6 @@ automation:
 - alias: 'Dali lights automation'
   trigger:
     platform: time
-    # When 'after' is used, you cannot also match on hour, minute, seconds.
-    # Military time format.
     after: '10:00:00'
   action:
     - service: light.turn_on
@@ -259,10 +250,7 @@ automation:
 - alias: 'send telegram via IFTTT to Riccardo if Lars is at the office'
   trigger:
     platform: state
-#    entity_id: device_tracker.hostone
-#    entity_id: device_tracker.hosttwo
     entity_id: device_tracker.28e14c992191
-#    entity_id: device_tracker.408805e5946b
     from: 'not_home'
     to: 'home'
   action:
