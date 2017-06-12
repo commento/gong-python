@@ -6,6 +6,8 @@ https://home-assistant.io/components/switch.arduino/
 """
 import logging
 from requests import get
+import re
+import subprocess
 import json
 
 from homeassistant.components.switch import (SwitchDevice, PLATFORM_SCHEMA)
@@ -16,40 +18,78 @@ from homeassistant.components.light import (
 from homeassistant.components.light import \
     PLATFORM_SCHEMA as LIGHT_PLATFORM_SCHEMA
 from homeassistant.util import color as color_util
+from homeassistant.const import CONF_HOSTS
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORM_SCHEMA = LIGHT_PLATFORM_SCHEMA
 
-urlx = 'http://192.168.1.8'
+REQUIREMENTS = ['python-nmap==0.6.1']
+
+#urlx = 'http://192.168.1.32'
+
+def _arp(ip_address):
+    """Get the MAC address for a given IP."""
+    cmd = ['arp', '-n', ip_address]
+    arp = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    out, _ = arp.communicate()
+    match = re.search(r'(([0-9A-Fa-f]{1,2}\:){5}[0-9A-Fa-f]{1,2})', str(out))
+    if match:
+        return match.group(0)
+    _LOGGER.info('No MAC address found for %s', ip_address)
+    return None
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Set up the Gong platform."""
 
     lights = []
-    lights.append(DaliLight())
+
+    from nmap import PortScanner, PortScannerError
+    scanner = PortScanner()
+
+    _LOGGER.error(scanner)
+
+    ip = ''
+
+    for i in range(255):
+        try:
+            result = scanner.scan(hosts='192.168.1.'+str(i), arguments=" --privileged -sP ")  # hosts=config[CONF_HOSTS]
+        except PortScannerError:
+            return _LOGGER.error("PortScannerError")
+
+        _LOGGER.error(result)
+
+        for ipv4, info in result['scan'].items():
+            mac = info['addresses'].get('mac') or _arp(ipv4)
+            _LOGGER.error(mac)
+            _LOGGER.error(ipv4)
+            if mac == '5C:CF:7F:E2:40:49': #put in config file
+                ip = ipv4
+                _LOGGER.error(ip)
+                break
+        if ip is not '':
+            break
+
+
+    lights.append(DaliLight('http://'+ip))
     add_devices(lights)
 
 class DaliLight(Light):
     """Representation of an Gong switch."""
 
-    def __init__(self):
+    def __init__(self,ip):
         """Initialize the Pin."""
         self._name = 'Dali'
         self.pin_type = 'digital'
         self.direction = 'out'
+        self.urlx = ip
 
-        # self._light = light
-
-        # # Caching of LightControl and light object
-        # self._light_control = light.light_control
-        # self._light_data = light.light_control.lights[0]
-
+        _LOGGER.error(self.urlx)
 
         # TODO: change to on
         self._state = False #options.get(CONF_INITIAL)
 
-        url = urlx
+        url = self.urlx
         headers = {'x-ha-access': 'raspberry',
        'content-type': 'application/json'}
 
@@ -59,7 +99,7 @@ class DaliLight(Light):
 
         state = json_data['state']
 
-        url = urlx + '/dimstate'
+        url = self.urlx + '/dimstate'
         headers = {'x-ha-access': 'raspberry',
        'content-type': 'application/json'}
 
@@ -93,7 +133,7 @@ class DaliLight(Light):
     def brightness(self):
         """Brightness of the light (an integer in the range 1-255)."""
         _LOGGER.error("inside brightness")
-        url = urlx + '/dimstate'
+        url = self.urlx + '/dimstate'
         headers = {'x-ha-access': 'raspberry',
        'content-type': 'application/json'}
 
@@ -133,7 +173,7 @@ class DaliLight(Light):
                 _LOGGER.error(bri)
 
 
-            url = urlx + '/dimset?bri=' + str(bri)
+            url = self.urlx + '/dimset?bri=' + str(bri)
             headers = {'x-ha-access': 'raspberry',
                 'content-type': 'application/json'}
 
@@ -141,12 +181,12 @@ class DaliLight(Light):
             _LOGGER.error(response.text)
 
             json_data = json.loads(response.text)
-            _LOGGER.error(json_data)   
+            _LOGGER.error(json_data)
 
             self._dimmer = kwargs[ATTR_BRIGHTNESS]
 
         else:
-            url = urlx + '/toggle'
+            url = self.urlx + '/toggle'
             headers = {'x-ha-access': 'raspberry',
                 'content-type': 'application/json'}
 
@@ -165,7 +205,7 @@ class DaliLight(Light):
         _LOGGER.error("DALI TURN OFF")
         self._state = False
 
-        url = urlx + '/toggle'
+        url = self.urlx + '/toggle'
         headers = {'x-ha-access': 'raspberry',
             'content-type': 'application/json'}
 
