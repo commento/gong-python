@@ -89,6 +89,4 @@ while True:
     if name == "x":
         manager.stop()
         break
-    # if device.is_connected() is not True:
-    #     device.connect()
     sleep(0.05)
