@@ -97,7 +97,8 @@ class JaaleeDevice(gatt.Device):
 
         self.jaalee_entity._state = not self.jaalee_entity._state
         _LOGGER.info(self.jaalee_entity._state)
-        self.jaalee_entity.update()
+        self.jaalee_entity.schedule_update_ha_state()
+        # self.jaalee_entity.update()
 
     def characteristic_read_value_failed(self, characteristic, error):
         _LOGGER.info("characteristic_read_value_failed, set temperature to STATE_UNKNOWN")
@@ -133,7 +134,7 @@ class JaaleeBinarySensor(BinarySensorDevice):
 
         t1 = threading.Thread(target=manager.run)
         t1.start()
-        self.update()
+        # self.update()
 
     @property
     def name(self):
@@ -151,6 +152,16 @@ class JaaleeBinarySensor(BinarySensorDevice):
             _LOGGER.info("is connected")
             # self.device.read_state()
         else:
+            # change the connection order
+            #############################
+#            self.device.disconnect()
+#            sleep(2)
+#            manager.stop()
+#            sleep(2)
+#            t1 = threading.Thread(target=manager.run)
+#            t1.start()
+#            sleep(2)
+            #############################
             self.device.connect()
             _LOGGER.info("is not connected, reconnect")
             # self.device.read_state()
