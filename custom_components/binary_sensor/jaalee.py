@@ -30,11 +30,13 @@ CHARACTERISTIC = '0000aa16-0000-1000-8000-00805f9b34fb'
 SERPASS = '0000fff0-0000-1000-8000-00805f9b34fb'
 CHARPASS = '0000fff1-0000-1000-8000-00805f9b34fb'
 
-manager = gatt.DeviceManager(adapter_name='hci0')
+manager = gatt.DeviceManager(adapter_name='hci1')
 
 _LOGGER = logging.getLogger(__name__)
 
 entities = []
+
+characteristic = None
 
 class JaaleeDevice(gatt.Device):
 
@@ -50,12 +52,15 @@ class JaaleeDevice(gatt.Device):
     def connect_failed(self, error):
         super().connect_failed(error)
         _LOGGER.info("[%s] Connection failed: %s" % (self.mac_address, str(error)))
-        # self.connect()
 
     def disconnect_succeeded(self):
         super().disconnect_succeeded()
         _LOGGER.info("[%s] Disconnected" % (self.mac_address))
-        # self.connect()
+        global characteristic
+        print(characteristic)
+        characteristic.enable_notifications(enabled=False)
+        sleep(2)
+        self.connect()
 
     def services_resolved(self):
         super().services_resolved()
@@ -65,6 +70,7 @@ class JaaleeDevice(gatt.Device):
             s for s in self.services
             if s.uuid == SERPASS)
 
+        global characteristic
         characteristic = next(
             c for c in device_information_service.characteristics
             if c.uuid == CHARPASS)
@@ -98,10 +104,17 @@ class JaaleeDevice(gatt.Device):
         self.jaalee_entity._state = not self.jaalee_entity._state
         _LOGGER.info(self.jaalee_entity._state)
         self.jaalee_entity.schedule_update_ha_state()
-        # self.jaalee_entity.update()
 
     def characteristic_read_value_failed(self, characteristic, error):
         _LOGGER.info("characteristic_read_value_failed, set temperature to STATE_UNKNOWN")
+
+    def characteristic_enable_notifications_succeeded(self, characteristic):
+        super().characteristic_enable_notifications_succeeded(characteristic)
+        print("characteristic_enable_notifications_succeeded")
+
+    def characteristic_enable_notifications_failed(self, characteristic, error):
+        super().characteristic_enable_notifications_failed(characteristic, error)
+        print("characteristic_enable_notifications_failed")
 
 # pylint: disable=unused-argument
 def setup_platform(hass, config, add_devices, discovery_info=None):
@@ -134,7 +147,6 @@ class JaaleeBinarySensor(BinarySensorDevice):
 
         t1 = threading.Thread(target=manager.run)
         t1.start()
-        # self.update()
 
     @property
     def name(self):
@@ -150,18 +162,7 @@ class JaaleeBinarySensor(BinarySensorDevice):
         """Get the latest value from the pin."""
         if self.device.is_connected():
             _LOGGER.info("is connected")
-            # self.device.read_state()
         else:
-            # change the connection order
-            #############################
-#            self.device.disconnect()
-#            sleep(2)
-#            manager.stop()
-#            sleep(2)
-#            t1 = threading.Thread(target=manager.run)
-#            t1.start()
-#            sleep(2)
-            #############################
+            _LOGGER.info("self.device.disconnect()")
             self.device.connect()
             _LOGGER.info("is not connected, reconnect")
-            # self.device.read_state()

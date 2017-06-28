@@ -3,6 +3,8 @@ import threading
 import binascii
 
 from time import sleep, time
+import os
+import sys
 
 SERVICE = '0000aa10-0000-1000-8000-00805f9b34fb'
 CHARACTERISTIC = '0000aa16-0000-1000-8000-00805f9b34fb' #16 button - 12 motion
@@ -12,8 +14,9 @@ CHARPASS = '0000fff1-0000-1000-8000-00805f9b34fb'
 
 PASSWORD = 0x666666
 
+characteristic = None
 
-manager = gatt.DeviceManager(adapter_name='hci0')
+manager = gatt.DeviceManager(adapter_name='hci1')
 
 
 class AnyDevice(gatt.Device):
@@ -25,12 +28,15 @@ class AnyDevice(gatt.Device):
     def connect_failed(self, error):
         super().connect_failed(error)
         print("[%s] Connection failed: %s" % (self.mac_address, str(error)))
-        # self.connect()
 
     def disconnect_succeeded(self):
         super().disconnect_succeeded()
         print("[%s] Disconnected" % (self.mac_address))
-        # self.connect()
+        print("connect")
+        global characteristic
+        print(characteristic)
+        characteristic.enable_notifications(enabled=False)
+        self.connect()
 
     def services_resolved(self):
         super().services_resolved()
@@ -45,6 +51,7 @@ class AnyDevice(gatt.Device):
             s for s in self.services
             if s.uuid == SERPASS)
 
+        global characteristic
         characteristic = next(
             c for c in device_information_service.characteristics
             if c.uuid == CHARPASS)
@@ -75,18 +82,20 @@ class AnyDevice(gatt.Device):
         print("characteristic_value_updated")
         print(value)
 
-
+t1 = threading.Thread(target=manager.run)
+t1.start()
+print(threading.enumerate())
 device = AnyDevice(mac_address='DC:C1:2E:9D:30:90', manager=manager)
 device.connect()
 print("device.connect()")
 
-t1 = threading.Thread(target=manager.run)
-t1.start()
-prev_update_time = time()
-
 while True:
     name = input("x ")
     if name == "x":
+        global manager
         manager.stop()
         break
+    if device.is_connected() is not True:
+         #os.execv(sys.executable, ['python3'] + sys.argv)
+         print("device connect")
     sleep(0.05)

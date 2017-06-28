@@ -26,26 +26,14 @@ REQUIREMENTS = ['gatt==0.2.3']
 SERVICE = '0000ffb0-0000-1000-8000-00805f9b34fb'
 CHARACTERISTIC = '0000ffb1-0000-1000-8000-00805f9b34fb'
 
+SERPASS = '0000fff0-0000-1000-8000-00805f9b34fb'
+CHARPASS = '0000fff1-0000-1000-8000-00805f9b34fb'
+
 manager = gatt.DeviceManager(adapter_name='hci0')
 
 _LOGGER = logging.getLogger(__name__)
 
 entities = []
-
-# pylint: disable=unused-argument
-def setup_platform(hass, config, add_devices, discovery_info=None):
-    """Validate configuration, create devices and start monitoring thread."""
-
-    devices = []
-    # TODO: configure more device with the same component
-    global entities
-    entity = JaaleeEntity('FF:F3:F0:A2:1A:35')
-    devices.append(entity)
-
-    if devices:
-        add_devices(devices)
-    else:
-        _LOGGER.warning("No devices were added")
 
 class JaaleeDevice(gatt.Device):
 
@@ -68,6 +56,17 @@ class JaaleeDevice(gatt.Device):
 
     def services_resolved(self):
         super().services_resolved()
+        # insert password
+        device_information_service = next(
+            s for s in self.services
+            if s.uuid == SERPASS)
+
+        characteristic = next(
+            c for c in device_information_service.characteristics
+            if c.uuid == CHARPASS)
+
+        characteristic.write_value([102, 102, 102])
+
 
     def read_temperature(self):
         device_information_service = next(
@@ -87,7 +86,7 @@ class JaaleeDevice(gatt.Device):
         _LOGGER.info(intvalue)
         if intvalue != 0:
             temperature = -46.86 + 175.72 * (intvalue/65536)
-            self.jaalee_entity.temperature = '%.3f'%(temperature)
+            self.jaalee_entity.temperature = '%.2f'%(temperature)
         else:
             self.jaalee_entity.temperature = STATE_UNKNOWN
         _LOGGER.info(self.jaalee_entity.temperature)
@@ -95,6 +94,23 @@ class JaaleeDevice(gatt.Device):
     def characteristic_read_value_failed(self, characteristic, error):
         _LOGGER.info("characteristic_read_value_failed, set temperature to STATE_UNKNOWN")
         self.jaalee_entity.temperature = STATE_UNKNOWN
+
+
+# pylint: disable=unused-argument
+def setup_platform(hass, config, add_devices, discovery_info=None):
+    """Validate configuration, create devices and start monitoring thread."""
+
+    devices = []
+    # TODO: configure more device with the same component
+    global entities
+    entity = JaaleeEntity('FF:F3:F0:A2:1A:35')
+    devices.append(entity)
+
+    if devices:
+        add_devices(devices)
+    else:
+        _LOGGER.warning("No devices were added")
+
 
 class JaaleeEntity(Entity):
     """Representation of a temperature sensor."""
