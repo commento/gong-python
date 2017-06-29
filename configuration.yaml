@@ -1,6 +1,6 @@
 homeassistant:
   # Name of the location where Home Assistant is running
-  name: Home
+  name: Office
   # Location required to calculate the time the sun rises and sets
   latitude: 52.5155
   longitude: 13.4062
@@ -34,7 +34,7 @@ ifttt:
   key: !secret iftttapikey
 
 knx:
-  host: 192.168.1.38
+  host: 192.168.1.44
 
 sensor:
   - platform: jaalee_temperature
@@ -60,12 +60,16 @@ updater:
 device_tracker:
   - platform: nmap_tracker
     hosts:
-      - 192.168.1.50
+      - 192.168.1.9
       - 192.168.1.76
-    scan_options: " --privileged -sS -O -p 4000 -Pn "
+ #   scan_options: " --privileged -sS -O -p 4000 -Pn "
+    scan_options: " --privileged -sP "
   - platform: ping
     hosts:
-      hostone: 192.168.1.50
+      hostone: 192.168.1.9
+#      hosttwo: 192.168.1.76
+#    interval_seconds: 5
+#    consider_home: 30
     interval_seconds: 10
     consider_home: 180
 #  - platform: icloud
@@ -100,10 +104,10 @@ binary_sensor:
     id: [0xFE,0xFB,0xFE,0x61]
   - platform: knx
     name: "knxBinarySensor"
-    address: 0/0/0
-binary_sensor 2:
-  platform: jaalee
-  scan_interval: 1
+    address: 0/0/1
+#binary_sensor 2:
+#  platform: jaalee
+#  scan_interval: 1
   # - platform: enocean
   #   name: "no-button sensor"
   #   id: [0xE2,0x15,0x00,0x00,0x1E,0xE7]
@@ -158,7 +162,7 @@ switch:
   - platform: gog
   - platform: knx
     name: KNX Switch
-    address: 0/0/0
+    address: 0/0/1
   # - platform: dali
   # - platform: enocean
   #   id: [0xFE,0xFB,0xFE,0x61]
@@ -175,7 +179,7 @@ automation:
 - alias: '10.00 Daily Alignment Gong'
   trigger:
     platform: time
-    after: '10:00:00'
+    at: '10:00:00'
   condition:
   - condition: time
     weekday:
@@ -190,7 +194,7 @@ automation:
 - alias: '9.00 Monday Alignment Gong'
   trigger:
     platform: time
-    after: '9:00:00'
+    at: '9:00:00'
   condition:
   - condition: time
     weekday:
@@ -212,30 +216,52 @@ automation:
 - alias: 'Dali lights automation'
   trigger:
     platform: time
-    after: '10:00:00'
+    at: '10:00:00'
   action:
     - service: light.turn_on
       entity_id: light.dali
 
-- alias: 'Dali on if iBeacon'
+- alias: 'Dali if iBeacon'
   trigger:
-    platform: state
-    entity_id: binary_sensor.ibeaconbinary
-    from: 'off'
-    to: 'on'
+    - platform: state
+      entity_id: binary_sensor.ibeaconbinary
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.ibeaconbinary
+      from: 'off'
+      to: 'on'
   action:
     - service: light.turn_on
       entity_id: light.dali
 
-- alias: 'Dali off if iBeacon'
+- alias: 'Dali if KNX'
   trigger:
-    platform: state
-    entity_id: binary_sensor.ibeaconbinary
-    from: 'on'
-    to: 'off'
+    - platform: state
+      entity_id: binary_sensor.knxbinarysensor
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.knxbinarysensor
+      from: 'off'
+      to: 'on'
   action:
     - service: light.turn_on
       entity_id: light.dali
+
+- alias: 'Sonos if KNX'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.knxbinarysensor
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.knxbinarysensor
+      from: 'off'
+      to: 'on'
+  action:
+    - service: media_player.media_play_pause
+      entity_id: media_player.office
 
 - alias: 'Dali on if home'
   trigger:
@@ -250,7 +276,10 @@ automation:
 - alias: 'send telegram via IFTTT to Riccardo if Lars is at the office'
   trigger:
     platform: state
+#    entity_id: device_tracker.hostone
+#    entity_id: device_tracker.hosttwo
     entity_id: device_tracker.28e14c992191
+#    entity_id: device_tracker.408805e5946b
     from: 'not_home'
     to: 'home'
   action:
@@ -280,6 +309,28 @@ automation:
   action:
     - service: media_player.media_play_pause
       entity_id: media_player.salotto
+
+#- alias: loop 5 second
+#  trigger:
+#    platform: time
+#    # You can also match on interval. This will match every 5 seconds
+#    seconds: '/10'
+#  action:
+#    - service: media_player.media_stop
+#      entity_id: media_player.office
+#    - service: media_player.select_source
+#      entity_id: media_player.office
+#      data:
+#        source: Lullaby
+
+#- alias: loop 20 second
+#  trigger:
+#    platform: time
+#    # You can also match on interval. This will match every 20 seconds
+#    seconds: '/40'
+#  action:
+#    - service: switch.turn_on
+#      entity_id: switch.gong
 
 group: !include groups.yaml
 
