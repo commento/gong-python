@@ -55,6 +55,7 @@ class JaaleeDevice(gatt.Device):
     def disconnect_succeeded(self):
         super().disconnect_succeeded()
         _LOGGER.info("[%s] Disconnected" % (self.mac_address))
+        global characteristic
         characteristic.enable_notifications(enabled=False)
         self.connect()
 
