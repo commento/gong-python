@@ -30,7 +30,7 @@ CHARACTERISTIC = '0000aa16-0000-1000-8000-00805f9b34fb'
 SERPASS = '0000fff0-0000-1000-8000-00805f9b34fb'
 CHARPASS = '0000fff1-0000-1000-8000-00805f9b34fb'
 
-manager = gatt.DeviceManager(adapter_name='hci1')
+manager = gatt.DeviceManager(adapter_name='hci0')
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -59,7 +59,7 @@ class JaaleeDevice(gatt.Device):
         global characteristic
         print(characteristic)
         characteristic.enable_notifications(enabled=False)
-        sleep(2)
+        #sleep(2)
         self.connect()
 
     def services_resolved(self):
@@ -119,13 +119,13 @@ class JaaleeDevice(gatt.Device):
 # pylint: disable=unused-argument
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Validate configuration, create devices and start monitoring thread."""
-
+    _LOGGER.warning("setup_platform") 
     devices = []
     # TODO: configure more device with the same component
     global entities
     entity = JaaleeBinarySensor('DC:C1:2E:9D:30:90')
     devices.append(entity)
-
+    _LOGGER.warning("device appended")
     if devices:
         add_devices(devices)
     else:
@@ -140,13 +140,15 @@ class JaaleeBinarySensor(BinarySensorDevice):
         self._state = False
 
         # TODO: add a configurable mac address
-        self.device = JaaleeDevice(mac_address, self)
+        #self.device = JaaleeDevice(mac_address, self)
 
-        self.device.connect()
+        #self.device.connect()
         _LOGGER.info("device.connect()")
 
         t1 = threading.Thread(target=manager.run)
         t1.start()
+        self.device = JaaleeDevice(mac_address, self)
+        self.device.connect()
 
     @property
     def name(self):
