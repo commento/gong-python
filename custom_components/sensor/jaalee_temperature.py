@@ -121,13 +121,16 @@ class JaaleeEntity(Entity):
         self.temperature = STATE_UNKNOWN
 
         # TODO: add a configurable mac address
-        self.device = JaaleeDevice(mac_address, self)
+        # self.device = JaaleeDevice(mac_address, self)
 
-        self.device.connect()
+        # self.device.connect()
         _LOGGER.info("device.connect()")
 
         t1 = threading.Thread(target=manager.run)
         t1.start()
+        self.device = JaaleeDevice(mac_address, self)
+
+        self.device.connect()
 
     @property
     def name(self):
