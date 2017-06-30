@@ -30,7 +30,7 @@ CHARACTERISTIC = '0000aa16-0000-1000-8000-00805f9b34fb'
 SERPASS = '0000fff0-0000-1000-8000-00805f9b34fb'
 CHARPASS = '0000fff1-0000-1000-8000-00805f9b34fb'
 
-manager = gatt.DeviceManager(adapter_name='hci1')
+manager = gatt.DeviceManager(adapter_name='hci0')
 
 _LOGGER = logging.getLogger(__name__)
 
