@@ -131,13 +131,13 @@ class JaaleeEntity(Entity):
         self.temperature = STATE_UNKNOWN
 
         # TODO: add a configurable mac address
-        self.device = JaaleeDevice(mac_address, self)
-
-        self.device.connect()
         _LOGGER.info("device.connect()")
 
         t1 = threading.Thread(target=manager.run)
         t1.start()
+        self.device = JaaleeDevice(mac_address, self)
+
+        self.device.connect()
 
     @property
     def name(self):
@@ -156,11 +156,11 @@ class JaaleeEntity(Entity):
 
     def update(self):
         """Get the latest value from the pin."""
-        if self.device.is_connected():
-            _LOGGER.info("is connected")
+        #if self.device.is_connected():
+        _LOGGER.info("is connected?")
             #self.device.read_temperature()
-        else:
-            self.device.connect()
-            _LOGGER.info("is not connected, reconnect")
+        #else:
+        #    self.device.connect()
+        #    _LOGGER.info("is not connected, reconnect")
             #self.device.read_temperature()
         _LOGGER.info(self.device)
