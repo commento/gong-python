@@ -119,7 +119,7 @@ class JaaleeDevice(gatt.Device):
 # pylint: disable=unused-argument
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Validate configuration, create devices and start monitoring thread."""
-    _LOGGER.warning("setup_platform") 
+    _LOGGER.warning("setup_platform")
     devices = []
     # TODO: configure more device with the same component
     global entities
@@ -130,6 +130,12 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
         add_devices(devices)
     else:
         _LOGGER.warning("No devices were added")
+    hass.bus.listen_once(EVENT_HOMEASSISTANT_STOP, close_tunnel)
+
+def close_tunnel(_data):
+    """Close the NKX tunnel connection on shutdown."""
+    _LOGGER.warning("manager stop")
+    manager.stop()
 
 class JaaleeBinarySensor(BinarySensorDevice):
     """Representation of a temperature sensor."""

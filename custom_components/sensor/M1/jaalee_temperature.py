@@ -111,6 +111,12 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     else:
         _LOGGER.warning("No devices were added")
 
+    hass.bus.listen_once(EVENT_HOMEASSISTANT_STOP, close_tunnel)
+
+def close_tunnel(_data):
+    """Close the NKX tunnel connection on shutdown."""
+    _LOGGER.warning("manager stop")
+    manager.stop()
 
 class JaaleeEntity(Entity):
     """Representation of a temperature sensor."""
