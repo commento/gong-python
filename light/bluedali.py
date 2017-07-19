@@ -157,7 +157,6 @@ class BlueDaliLight(Light):
         _LOGGER.error("TURN OFF")
         self.device.turn_off()
         self._state = False
-        characteristic.write_value([1,1,0,0,0,0])
 
     def update(self):
         """Get the latest value from the pin."""
