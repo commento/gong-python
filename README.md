@@ -19,6 +19,6 @@ Then, it became a backup for all the scripts and Home Assistant integrations I w
 
 The main configuration is stored in `configuration.yaml`.
 In the main folder all the scripts developed to test the device fuctionality are present.
-The sub-folders contains Home Assistant integrations.
+The sub-folders contain Home Assistant integrations.
 
 
