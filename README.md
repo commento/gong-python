@@ -43,7 +43,7 @@ The id is an hardware identifier reported on the back of the device.
 As specified in the Home Assistant documentation: https://home-assistant.io/components/enocean/
 only some enOcean devices are confirmed to work.
 
-KNOWN ISSUES:
+Known issues:
 - https://github.com/getsenic/senic-hub/issues/200
 
 ### KNX
@@ -55,7 +55,7 @@ knx:
 All the other specific devices in the system has to be configured using their assigned KNX group addresses as explained at:
 https://home-assistant.io/components/knx/
 
-KNOWN ISSUES:
+Known issues:
 - https://github.com/getsenic/senic-hub/issues/202
 - https://github.com/getsenic/senic-hub/issues/196
 
@@ -129,14 +129,27 @@ https://home-assistant.io/components/ifttt/
 
 ### Slack integration
 
-KNOWN ISSUES:
+Known issues:
 - https://github.com/getsenic/senic-hub/issues/197
 
 ### Osram Ligthify
-
+```
+light:
+  - platform: osramlightify
+    host: 192.168.1.120
+```
 ### Lifx
+The integration for Lifx is based on the lifx_legacy component due to issues arised using the normal integration.
+The configuration file has to be setup adding the ip address of the server, for the Senic Hub implementation this corresponds to the Hub ip address.
+```
+light:
+  - platform: lifx_legacy
+    server: 192.168.1.12
+```
+further information:
+https://home-assistant.io/components/light.lifx/
 
-KNOWN ISSUES:
+Known issues:
 - https://github.com/getsenic/senic-hub/issues/195
 - https://github.com/getsenic/senic-hub/issues/198
 
