@@ -43,6 +43,9 @@ The id is an hardware identifier reported on the back of the device.
 As specified in the Home Assistant documentation: https://home-assistant.io/components/enocean/
 only some enOcean devices are confirmed to work.
 
+KNOWN ISSUES:
+- https://github.com/getsenic/senic-hub/issues/200
+
 ### KNX
 KNX scan does not work as expected. So the host ip address has to be added manually in the configuration file:
 ```
@@ -51,6 +54,10 @@ knx:
 ```
 All the other specific devices in the system has to be configured using their assigned KNX group addresses as explained at:
 https://home-assistant.io/components/knx/
+
+KNOWN ISSUES:
+- https://github.com/getsenic/senic-hub/issues/202
+- https://github.com/getsenic/senic-hub/issues/196
 
 ### Dali over Wifi
 The Dali over Wifi implementation is based on the demo device implemented in the private repository: https://github.com/getsenic/esp8266-dali
@@ -69,20 +76,69 @@ https://github.com/commento/gong-python/blob/master/light/bluedali.py
 The custom component implementation for the Jaalee iBeacon button is located in custom_components/binary_sensor:
 https://github.com/commento/gong-python/blob/master/custom_components/binary_sensor/jaalee.py
 
+The official app is required in order to onboard the device the first step.
+In this procedure has to be done in another app the required steps are the following:
+- keep the button pressed
+- Write password
+- Change the State to 0x82 (connectable mode and beacon broadcast)
+- Remove the sounds if you want
+- Change the frequency of update if you want
+- Change the name if you want
+
 ### Jaalee iBeacon temperature sensor
 The custom component implementation for the Jaalee iBeacon button is located in custom_components/sensor:
 https://github.com/commento/gong-python/blob/master/custom_components/sensor/jaalee_temperature.py
 
 ### nmap based location tracking
+the integration has been provided modifing the configuration file:
+```
+device_tracker:
+  - platform: nmap_tracker
+    hosts:
+      - ??.??.??.??
+    scan_options: " --privileged -sP "
+```
+further information:
+https://home-assistant.io/components/device_tracker.nmap_tracker/
+
 Requirements: nmap has to be installed on the OS
 
 ### IFTTT
+This is an example implemented where the webhook app was
+configuration file:
+```
+ifttt:
+  key: !secret iftttapikey
+```
+
+related automation example:
+```
+- alias: 'send telegram via IFTTT to Riccardo if Lars is at the office'
+  trigger:
+    platform: state
+    entity_id: device_tracker.28e14c992191
+    from: 'not_home'
+    to: 'home'
+  action:
+    - service: ifttt.trigger
+      data: {"event":"button_pressed"}
+```
+
+further information:
+https://home-assistant.io/components/ifttt/
 
 ### Slack integration
+
+KNOWN ISSUES:
+- https://github.com/getsenic/senic-hub/issues/197
 
 ### Osram Ligthify
 
 ### Lifx
+
+KNOWN ISSUES:
+- https://github.com/getsenic/senic-hub/issues/195
+- https://github.com/getsenic/senic-hub/issues/198
 
 ### Philips Hue
 
@@ -90,6 +146,9 @@ Requirements: nmap has to be installed on the OS
 
 ### Bose
 
+Bose Soundtouch has been already implemented on the nuimo_app side (media_player component) in order to control the Bose speaker
+
 ### Gong
 
 ### Home Assistant Automation
+
