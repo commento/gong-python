@@ -61,7 +61,7 @@ Known issues:
 
 ### Dali over Wifi
 The Dali over Wifi implementation is based on the demo device implemented in the private repository: https://github.com/getsenic/esp8266-dali
-The Home Assistant component is located in the folder light, file dali.py:
+The Home Assistant component is located in the folder custom_components/light, file dali.py:
 https://github.com/commento/gong-python/blob/master/light/dali.py
 
 As for all the custom components, the implementation has to be placed according to these instructions:
@@ -69,7 +69,7 @@ https://home-assistant.io/developers/creating_components/
 
 ### Dali over BLE
 The Dali over BLE implementation is basically an Home Assistant integration of the iLumTech Bluebridge device.
-The Home Assistant component is located in the folder light, file bluedali.py:
+The Home Assistant component is located in the folder custom_components/light, file bluedali.py:
 https://github.com/commento/gong-python/blob/master/light/bluedali.py
 
 ### Jaalee iBeacon button
