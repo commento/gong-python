@@ -23,7 +23,7 @@ The main configuration is stored in `configuration.yaml`.
 In the main folder all the scripts developed to test the device fuctionality are present.
 The sub-folders contain Home Assistant integrations.
 
-Home-Assistant-related known issues are collected under https://github.com/getsenic/senic-hub/issues with the tag HA. 
+Home-Assistant-related known issues are collected under https://github.com/getsenic/senic-hub/issues with the tag HA.
 
 ## Device specific information
 Here collected some useful information that can be used to setup the HA components
@@ -154,14 +154,51 @@ Known issues:
 - https://github.com/getsenic/senic-hub/issues/198
 
 ### Philips Hue
-
+The integration of Philips Hue is required only for the Home Automation functionality. The configuration file is created and filled by the senic_hub backend during the onboarding phase.
+```
+light:
+- filename: 001788176885.conf
+  host: 192.168.1.81
+  platform: hue
+- filename: 001788708284.conf
+  host: 192.168.1.77
+  platform: hue
+```
 ### Sonos
-
+The integration of Sonos is required only for the Home Automation functionality. The configuration file is created and filled by the senic_hub backend during the onboarding phase.
+```
+media_player:
+- host: 192.168.1.51
+  platform: sonos
+- host: 192.168.1.78
+  platform: sonos
+```
 ### Bose
-
-Bose Soundtouch has been already implemented on the nuimo_app side (media_player component) in order to control the Bose speaker
+Bose Soundtouch has been already implemented on the nuimo_app side (media_player component) in order to control the Bose speaker.
+Also the automatic discovery is in place and after the Zeroconf fix
 
 ### Gong
-
+The gong script is located in custom_components/switch in the file gog.py
+```
+switch:
+  - platform: gog
+```
 ### Home Assistant Automation
+The Home Automation is implemented in the configuration file. Here an example to actuate a wifi light with a BLE button:
+```
+automation:
+- alias: 'Dali if iBeacon'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.ibeaconbinary
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.ibeaconbinary
+      from: 'off'
+      to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.dali
+```
 
