@@ -138,6 +138,7 @@ light:
   - platform: osramlightify
     host: 192.168.1.120
 ```
+Further information at https://home-assistant.io/components/light.osramlightify/
 ### Lifx
 The integration for Lifx is based on the lifx_legacy component due to issues arised using the normal integration.
 The configuration file has to be setup adding the ip address of the server, for the Senic Hub implementation this corresponds to the Hub ip address.
@@ -164,6 +165,7 @@ light:
   host: 192.168.1.77
   platform: hue
 ```
+Further information at https://home-assistant.io/components/light.hue/
 ### Sonos
 The integration of Sonos is required only for the Home Automation functionality. The configuration file is created and filled by the senic_hub backend during the onboarding phase.
 ```
@@ -173,9 +175,11 @@ media_player:
 - host: 192.168.1.78
   platform: sonos
 ```
+Further information at https://home-assistant.io/components/media_player.sonos/
 ### Bose
 Bose Soundtouch has been already implemented on the nuimo_app side (media_player component) in order to control the Bose speaker.
-Also the automatic discovery is in place and after the Zeroconf fix
+Also, the automatic discovery is in place and after the Zeroconf fix.
+Further information: https://home-assistant.io/components/media_player.soundtouch/
 
 ### Gong
 The gong script is located in custom_components/switch in the file gog.py
