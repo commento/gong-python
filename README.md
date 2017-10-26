@@ -184,7 +184,7 @@ switch:
   - platform: gog
 ```
 ### Home Assistant Automation
-The Home Automation is implemented in the configuration file. Here an example to actuate a wifi light with a BLE button:
+The Home Automation is implemented in the configuration file. Here an example to actuate a light connected over wifi with a BLE button:
 ```
 automation:
 - alias: 'Dali if iBeacon'
@@ -201,4 +201,22 @@ automation:
     - service: light.turn_on
       entity_id: light.dali
 ```
-
+Another type of automation is the one based on time platform:
+```
+automation:
+- alias: '10.00 Daily Alignment Gong'
+  trigger:
+    platform: time
+    at: '10:00:00'
+  condition:
+  - condition: time
+    weekday:
+      - tue
+      - wed
+      - thu
+      - fri
+  action:
+    - service: switch.turn_on
+      entity_id: switch.gong
+```
+Further information can be found in the official documentation: https://home-assistant.io/getting-started/automation/
